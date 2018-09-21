@@ -1,0 +1,3 @@
+/* import Ecore*/
+//namespace Conference{
+//}

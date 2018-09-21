@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "outDir": "./dist/",
+    "lib": ["es6", "es2015.promise" ],
+    "jsx": "react",
+    "jsxFactory": "JSX.createElement",
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+
+
+    "baseUrl": ".",
+    "paths":{
+      "ecore/*": ["src/ecore/*"],
+      "conference/*": ["src/conference/*"]
+    }
+
+
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx"
+  ]
+}
