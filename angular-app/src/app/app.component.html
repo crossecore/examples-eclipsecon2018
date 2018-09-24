@@ -1,0 +1,22 @@
+<form class="example-form">
+  <mat-tab-group>
+    <mat-tab label="Program">
+      <mat-list>
+        <mat-list-item *ngFor="let talk of talks">
+          <h3 matLine> {{talk.title}} </h3>
+          <p matLine> <span *ngFor="let speaker of talk.speakers">{{speaker.firstName}} {{speaker.lastName}}</span></p>
+          <p matLine class="demo-2"> {{talk.startDate | date:'HH:mm'}} </p>
+        </mat-list-item>
+      </mat-list>
+    </mat-tab>
+    <mat-tab label="Profile">
+      <mat-form-field>
+        <input matInput placeholder="First Name" value="">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Last Name" value="">
+      </mat-form-field>
+    </mat-tab>
+  </mat-tab-group>
+</form>
+

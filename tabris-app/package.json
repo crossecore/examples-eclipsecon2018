@@ -12,7 +12,9 @@
     "serve": "tabris serve"
   },
   "dependencies": {
-    "pouchdb": "^7.0.0",
+    "@types/pouchdb": "^6.3.2",
+    "pouchdb": "^6.4.3",
+    "pouchdb-adapter-cordova-sqlite": "^2.0.5",
     "tabris": "^2.6.1"
   },
   "devDependencies": {

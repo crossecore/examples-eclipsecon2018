@@ -7,5 +7,6 @@
   <author email="schwicht@mail.upb.de">
     Simon Schwichtenberg
   </author>
+  <plugin name="cordova-plugin-sqlite-2" spec="^1.0.5" />
   <preference name="EnableDeveloperConsole" value="$IS_DEBUG" />
 </widget>
