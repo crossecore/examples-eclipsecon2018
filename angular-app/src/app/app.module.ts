@@ -1,9 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { MaterialImporterModule } from './material-importer.module';
 
 import { AppComponent } from './app.component';
-import { MaterialImporterModule } from './material-importer.module';
 
 @NgModule({
   declarations: [
@@ -11,8 +10,7 @@ import { MaterialImporterModule } from './material-importer.module';
   ],
   imports: [
     BrowserModule,
-    MaterialImporterModule,
-    HttpClientModule
+    MaterialImporterModule
   ],
   providers: [],
   bootstrap: [AppComponent]

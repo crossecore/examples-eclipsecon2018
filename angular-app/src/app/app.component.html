@@ -1,67 +1,67 @@
 <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
 <!--<form class="example-form">-->
-  <mat-tab-group>
-    <mat-tab label="Program">
-      <mat-button-toggle-group [value]="filteredTrack" #group="matButtonToggleGroup">
+<mat-tab-group>
+  <mat-tab label="Program">
+    <mat-button-toggle-group [value]="filteredTrack" #group="matButtonToggleGroup">
 
-        <mat-button-toggle *ngFor="let track of conference.tracks" (click)="toggleTrack(track)">
-          <i *ngIf="track.name==='Tools & IDEs'" class="fa fa-wrench fa-2x session-tools-ides"></i>
-          <i *ngIf="track.name==='Java & JDT'" class="fa fa-coffee fa-2x session-java-jdt"></i>
-          <i *ngIf="track.name==='Runtime & Frameworks'" class="fa fa-clock-o fa-2x session-runtime-frameworks"></i>
-          <i *ngIf="track.name==='Web & Cloud Development'" class="fa fa-cloud fa-2x session-web-cloud-development"></i>
-          <i *ngIf="track.name==='Built on Eclipse'" class="fa fa-paperclip fa-2x session-built-on-eclipse"></i>
-          <i *ngIf="track.name==='Eclipse 101'" class="fa fa-bank fa-2x session-eclipse101"></i>
-          <i *ngIf="track.name==='Cloud Native Java'" class="fa fa-cloud-download fa-2x session-cloud-native-java"></i>
-          <i *ngIf="track.name==='Other Cool Stuff'" class="fa fa-bullseye fa-2x session-other-cool-stuff"></i>
-          <i *ngIf="track.name==='OSGi'" class="fa fa-sun-o fa-2x session-osgi"></i>
-          <i *ngIf="track.name==='Project Quality Day'" class="fa fa-check-square-o fa-2x session-project-quality-day"></i>
-          <i *ngIf="track.name==='IoT Day'" class="fa fa-bolt fa-2x session-iot-day"></i>
-          <i *ngIf="track.name==='Keynote'" class="fa fa-key fa-2x session-keynote"></i>
-          <div>{{track.name}}</div>
-        </mat-button-toggle>
-      </mat-button-toggle-group>
+      <mat-button-toggle [value]="track" *ngFor="let track of conference.tracks" (click)="toggleTrack(track)">
+        <i *ngIf="track.name==='Tools & IDEs'" class="fa fa-wrench fa-2x session-tools-ides"></i>
+        <i *ngIf="track.name==='Java & JDT'" class="fa fa-coffee fa-2x session-java-jdt"></i>
+        <i *ngIf="track.name==='Runtime & Frameworks'" class="fa fa-clock-o fa-2x session-runtime-frameworks"></i>
+        <i *ngIf="track.name==='Web & Cloud Development'" class="fa fa-cloud fa-2x session-web-cloud-development"></i>
+        <i *ngIf="track.name==='Built on Eclipse'" class="fa fa-paperclip fa-2x session-built-on-eclipse"></i>
+        <i *ngIf="track.name==='Eclipse 101'" class="fa fa-bank fa-2x session-eclipse101"></i>
+        <i *ngIf="track.name==='Cloud Native Java'" class="fa fa-cloud-download fa-2x session-cloud-native-java"></i>
+        <i *ngIf="track.name==='Other Cool Stuff'" class="fa fa-bullseye fa-2x session-other-cool-stuff"></i>
+        <i *ngIf="track.name==='OSGi'" class="fa fa-sun-o fa-2x session-osgi"></i>
+        <i *ngIf="track.name==='Project Quality Day'" class="fa fa-check-square-o fa-2x session-project-quality-day"></i>
+        <i *ngIf="track.name==='IoT Day'" class="fa fa-bolt fa-2x session-iot-day"></i>
+        <i *ngIf="track.name==='Keynote'" class="fa fa-key fa-2x session-keynote"></i>
+        <div>{{track.name}}</div>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
 
-      <mat-list>
-        <mat-list-item *ngFor="let talk of filteredTalks">
-          <h3 matLine> {{talk.title}} </h3>
-          <p matLine> <span *ngFor="let speaker of talk.speakers">{{speaker.firstName}} {{speaker.lastName}} ({{speaker.worksFor}}) </span></p>
-          <p matLine> {{talk.timeBegin | date:'HH:mm'}} - {{talk.timeEnd | date:'HH:mm'}} </p>
-          <p matLine> {{talk.track.name}} </p>
-          <button (click)="toggleAttending(talk)" mat-raised-button>
-            <mat-icon *ngIf="user.attends.includes(talk)">check</mat-icon>
-            <mat-icon *ngIf="user.attends.excludes(talk)">add</mat-icon>
-          </button>
-          <!--<mat-button-toggle *ngIf="checked"><mat-icon>add</mat-icon></mat-button-toggle>
-          <mat-button-toggle *ngIf="!checked"><mat-icon>check</mat-icon></mat-button-toggle>-->
-          <mat-divider></mat-divider>
-        </mat-list-item>
+    <mat-list>
+      <mat-list-item *ngFor="let talk of filteredTalks">
+        <h3 matLine> {{talk.title}} </h3>
+        <p matLine> <span *ngFor="let speaker of talk.speakers">{{speaker.firstName}} {{speaker.lastName}} ({{speaker.worksFor}}) </span></p>
+        <p matLine> {{talk.timeBegin | date:'HH:mm'}} - {{talk.timeEnd | date:'HH:mm'}} </p>
+        <p matLine> {{talk.track.name}} </p>
+        <button (click)="toggleAttending(talk)" mat-raised-button>
+          <mat-icon *ngIf="user.attends.includes(talk)">check</mat-icon>
+          <mat-icon *ngIf="user.attends.excludes(talk)">add</mat-icon>
+        </button>
+        <!--<mat-button-toggle *ngIf="checked"><mat-icon>add</mat-icon></mat-button-toggle>
+        <mat-button-toggle *ngIf="!checked"><mat-icon>check</mat-icon></mat-button-toggle>-->
+        <mat-divider></mat-divider>
+      </mat-list-item>
 
-      </mat-list>
-    </mat-tab>
-    <mat-tab label="Profile">
-      <mat-form-field>
-        <input matInput placeholder="First Name" value="">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="Last Name" value="">
-      </mat-form-field>
-    </mat-tab>
-    <mat-tab label="About">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>Powered by CrossEcore</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          This app is powered by CrossEcore.
-          Developed by Simon Schwichtenberg.
+    </mat-list>
+  </mat-tab>
+  <mat-tab label="Profile">
+    <mat-form-field>
+      <input matInput placeholder="First Name" value="">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Last Name" value="">
+    </mat-form-field>
+  </mat-tab>
+  <mat-tab label="About">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Powered by CrossEcore</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        This app is powered by CrossEcore.
+        Developed by Simon Schwichtenberg.
 
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-raised-button disabled="{{!isAndroid}}">Install on Android <i class="fa fa-android"></i></button>
-          <button mat-raised-button>Visit on GitHub <i class="fa fa-github"></i></button>
-        </mat-card-actions>
-      </mat-card>
-    </mat-tab>
-  </mat-tab-group>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button disabled="{{!isAndroid}}">Install on Android <i class="fa fa-android"></i></button>
+        <button mat-raised-button>Visit on GitHub <i class="fa fa-github"></i></button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-tab>
+</mat-tab-group>
 <!--</form>-->
 

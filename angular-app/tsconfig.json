@@ -1,14 +1,19 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
+    "module": "es2015",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
-
+    "baseUrl": "./src", // This must be specified if "paths" is.
+    "paths": {
+      "ecore/*": ["ecore/*"] // This mapping is relative to "baseUrl"
+    },
     "typeRoots": [
       "node_modules/@types"
     ],
