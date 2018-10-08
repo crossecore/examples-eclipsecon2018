@@ -1,33 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="conference" nsURI="conference" nsPrefix="conference">
+  <eAnnotations source="http://www.eclipse.org/OCL/Import">
+    <details key="ecore" value="http://www.eclipse.org/emf/2002/Ecore"/>
+  </eAnnotations>
+  <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+    <details key="invocationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+    <details key="settingDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+    <details key="validationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+  </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="Room" eSuperTypes="#//NamedElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="Person">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="affiliation" eType="#//Organization"/>
+    <eOperations name="meetsPersonAt" ordered="false" upperBound="-1" eType="#//Talk">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+        <details key="body" value="Talk.allInstances()->select(t:Talk | (t.speakers->includes(self) or t.attendees->includes(self)) and (t.speakers->includes(other) or t.attendees->includes(other)))"/>
+      </eAnnotations>
+      <eParameters name="other" eType="#//Person"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="worksFor" eType="#//Organization"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="firstName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="gives" upperBound="-1"
+        eType="#//Talk" eOpposite="#//Talk/speakers"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attends" upperBound="-1"
+        eType="#//Talk" eOpposite="#//Talk/attendees"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Organization" eSuperTypes="#//NamedElement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Track" eSuperTypes="#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Track" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="talks" upperBound="-1"
+        eType="#//Talk" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+        <details key="derivation" value="self.conference.talks->select(t:Talk|t.track = self)"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conference" eType="#//Conference"
+        eOpposite="#//Conference/tracks"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Talk">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="hasDuration beginBeforeEnd"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="hasDuration" value="self.timeBegin &lt;> self.timeEnd"/>
+      <details key="beginBeforeEnd" value="self.timeBegin &lt; self.timeEnd"/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="timeBegin" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="timeEnd" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="track" eType="#//Track"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="room" eType="#//Room"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="speakers" upperBound="-1"
-        eType="#//Person"/>
+        eType="#//Person" eOpposite="#//Person/gives"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attendees" upperBound="-1"
-        eType="#//Person"/>
+        eType="#//Person" eOpposite="#//Person/attends"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Conference" eSuperTypes="#//NamedElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" eType="#//Venue" containment="true"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="noConflict"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="noConflict" value="self.talks->forAll(t1:Talk | self.talks->forAll(t2:Talk| (t1.timeBegin &lt; t2.timeBegin and t1.timeEnd &lt;= t2.timeBegin) or (t2.timeBegin &lt; t1.timeBegin and t2.timeEnd &lt;= t1.timeBegin)))"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="venue" eType="#//Venue"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="talks" upperBound="-1"
         eType="#//Talk" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attendees" eType="#//Person"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="tracks" upperBound="-1"
-        eType="#//Track" containment="true"/>
+        eType="#//Track" containment="true" eOpposite="#//Track/conference"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="organizations" upperBound="-1"
         eType="#//Organization" containment="true"/>
   </eClassifiers>
