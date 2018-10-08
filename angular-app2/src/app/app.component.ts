@@ -9,7 +9,7 @@ import {Conference} from 'conference/Conference';
 
 import * as Papa from 'papaparse';
 
-import PouchDB from 'pouchdb';
+//import PouchDB from 'pouchdb';
 
 
 
@@ -64,72 +64,72 @@ export class AppComponent implements OnInit {
 
 
 
-          var talk = ConferenceFactoryImpl.eINSTANCE.createTalk();
-          //"Building Cloud and Desktop IDEs with Theia","Web & Cloud Development","Anton Kosyakov (TypeFox)","TypeFox","Bürgersaal 2","Tuesday, October 23, 2018 - 09:00 to 12:00"
+            var talk = ConferenceFactoryImpl.eINSTANCE.createTalk();
+            //"Building Cloud and Desktop IDEs with Theia","Web & Cloud Development","Anton Kosyakov (TypeFox)","TypeFox","Bürgersaal 2","Tuesday, October 23, 2018 - 09:00 to 12:00"
 
-          talk.title = rawTitle;
+            talk.title = rawTitle;
 
-          var speaker = ConferenceFactoryImpl.eINSTANCE.createPerson();
+            var speaker = ConferenceFactoryImpl.eINSTANCE.createPerson();
 
 
-          if(rawSpeakers!==undefined){
-            var index = rawSpeakers.indexOf('(');
+            if(rawSpeakers!==undefined){
+              var index = rawSpeakers.indexOf('(');
 
-            if(index > -1){
-              var name = rawSpeakers.substring(0, index - 1);
-              var parts = name.split(' ');
-              speaker.firstName = parts[0];
-              speaker.lastName = parts[1];
-              talk.speakers.push(speaker);
+              if(index > -1){
+                var name = rawSpeakers.substring(0, index - 1);
+                var parts = name.split(' ');
+                speaker.firstName = parts[0];
+                speaker.lastName = parts[1];
+                talk.speakers.push(speaker);
+              }
+
+              speaker.worksFor = rawOrganization;
             }
 
-            speaker.worksFor = rawOrganization;
+            if(rawTrack!==undefined){
+
+
+              var track:Track = null;
+
+
+
+              if(conference.tracks.select(t => t.name ===rawTrack).isEmpty()){
+                track = ConferenceFactoryImpl.eINSTANCE.createTrack();
+                track.name = rawTrack;
+                conference.tracks.add(track);
+              }
+              else{
+                track = conference.tracks.select(t=>t.name === rawTrack).any(t=>true);
+              }
+
+              talk.track = track;
+
+            }
+
+            if(rawTime!==undefined){
+              let match = rawTime.match(/(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday), (January|February|March|April|May|June|July|August|Sepetember|October|November|December) (\d{1,2}), (\d{4}) - (\d{2}):(\d{2}) to (\d{2}):(\d{2})/);
+
+              if(match !== null){
+                let dayofweek = match[1];
+                let month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].indexOf(match[2]);
+                let day = +match[3];
+                let year = +match[4];
+                let startHour = +match[5];
+                let startMinute = +match[6];
+                let endHour = +match[7];
+                let endMinute = +match[8];
+                // "Tuesday, October 23, 2018 - 14:30 to 15:05"
+                talk.timeBegin = new Date(year, month, day, startHour, startMinute);
+                talk.timeEnd = new Date(year, month, day, endHour, endMinute);
+              }
+            }
+
+            closure.talks.push(talk)
+            conference.talks.add(talk);
+
           }
 
-          if(rawTrack!==undefined){
-
-
-            var track:Track = null;
-
-
-
-            if(conference.tracks.select(t => t.name ===rawTrack).isEmpty()){
-              track = ConferenceFactoryImpl.eINSTANCE.createTrack();
-              track.name = rawTrack;
-              conference.tracks.add(track);
-            }
-            else{
-              track = conference.tracks.select(t=>t.name === rawTrack).any(t=>true);
-            }
-
-            talk.track = track;
-
-          }
-
-          if(rawTime!==undefined){
-            let match = rawTime.match(/(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday), (January|February|March|April|May|June|July|August|Sepetember|October|November|December) (\d{1,2}), (\d{4}) - (\d{2}):(\d{2}) to (\d{2}):(\d{2})/);
-
-            if(match !== null){
-              let dayofweek = match[1];
-              let month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].indexOf(match[2]);
-              let day = +match[3];
-              let year = +match[4];
-              let startHour = +match[5];
-              let startMinute = +match[6];
-              let endHour = +match[7];
-              let endMinute = +match[8];
-              // "Tuesday, October 23, 2018 - 14:30 to 15:05"
-              talk.timeBegin = new Date(year, month, day, startHour, startMinute);
-              talk.timeEnd = new Date(year, month, day, endHour, endMinute);
-            }
-          }
-
-          closure.talks.push(talk)
-          conference.talks.add(talk);
-
-        }
-
-        closure.filteredTalks = conference.talks;
+          closure.filteredTalks = conference.talks;
         }
       }
 
@@ -192,7 +192,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
 
-
+    /*
     const db = new PouchDB('helloworld');
     // okay, now we have our database
 
@@ -212,6 +212,7 @@ export class AppComponent implements OnInit {
       console.log(err);
       //this.snackBar.open('put not complete');
     });
+    */
   }
 
 
