@@ -2,14 +2,16 @@ import {Component, OnInit} from '@angular/core';
 import {MatButtonToggleModule, MatSnackBar} from '@angular/material';
 
 import {ConferenceFactoryImpl} from 'conference/ConferenceFactoryImpl';
+//import {ConferencePackageImpl} from 'conference/ConferencePackageImpl';
 import {Talk} from 'conference/Talk';
 import {Track} from 'conference/Track';
 import {Person} from 'conference/Person';
 import {Conference} from 'conference/Conference';
+import {EClass} from 'ecore/EClass';
 
 import * as Papa from 'papaparse';
 
-//import PouchDB from 'pouchdb';
+import PouchDB from 'pouchdb';
 
 
 
@@ -27,8 +29,10 @@ export class AppComponent implements OnInit {
   filteredTalks:Array<Talk>;
   filteredTrack:Track;
   isAndroid: boolean;
+  eclass:EClass;
 
   constructor(public snackBar: MatSnackBar) {
+
 
 
     this.talks = new Array<Talk>();
@@ -37,12 +41,15 @@ export class AppComponent implements OnInit {
 
     this.user = ConferenceFactoryImpl.eINSTANCE.createPerson();
 
+    //this.eclass = ConferencePackageImpl.eINSTANCE.getPerson();
 
     this.isAndroid = navigator.userAgent.toLowerCase().indexOf('android')>-1;
 
     var closure = this;
 
     var conference = this.conference;
+
+    this.test();
 
 
     Papa.parse('assets/eclipsecon.csv', {
@@ -139,6 +146,30 @@ export class AppComponent implements OnInit {
 
   }
 
+
+  test(){
+
+
+
+
+    let person:Person = ConferenceFactoryImpl.eINSTANCE.createPerson();
+
+
+    //console.log(person.eClass());
+    let talk:Talk = ConferenceFactoryImpl.eINSTANCE.createTalk();
+
+    person.attends.add(talk);
+
+    console.log(talk.attendees.includes___(person)); //returns true
+    console.log(person.attends.includes___(talk)); //returns true
+
+    talk.attendees.remove(person);
+
+    console.log(person.attends.excludes(talk)); //returns true
+    console.log(talk.attendees.excludes(person)); //returns true
+
+  }
+
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 2000,
@@ -192,7 +223,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
 
-    /*
+
     const db = new PouchDB('helloworld');
     // okay, now we have our database
 
@@ -212,7 +243,7 @@ export class AppComponent implements OnInit {
       console.log(err);
       //this.snackBar.open('put not complete');
     });
-    */
+
   }
 
 

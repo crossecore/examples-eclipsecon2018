@@ -11,9 +11,12 @@
     "experimentalDecorators": true,
     "target": "es5",
     "baseUrl": "./src", // This must be specified if "paths" is.
+    /*
     "paths": {
       "ecore/*": ["ecore/*"] // This mapping is relative to "baseUrl"
     },
+    */
+    "allowSyntheticDefaultImports": true, //https://pouchdb.com/guides/setup-pouchdb.html#typescript
     "typeRoots": [
       "node_modules/@types"
     ],
