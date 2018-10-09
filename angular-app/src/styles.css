@@ -3,6 +3,15 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 
+html, body{
+  margin:0;
+  padding:0;
+}
+
+.sidenav{
+  padding: 20px 20px 0 20px;
+}
+
 /*!
  *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
