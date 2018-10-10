@@ -26,11 +26,21 @@ A ``Talk`` takes place in one ``Room``.
 ## Reflection
 
 This example shows how to use the Ecore reflection API to realize a dynamic property editor. From a given object instance, the superordinate ``EClass`` is determined. It iterates over all its ``EAttributes`` (even inherited) and renders dynamically UI elements that correspond to the ``eType`` of the respective ``EAttribute``.
+The following code snipped illustrates how to use the reflection within an Angular HTML template.
+
+```html
+<mat-form-field *ngFor="let attribute of user.eClass().eAllAttributes">
+  <input matInput [placeholder]="attribute.name">
+</mat-form-field>
+```
 
 
 ## Factories
 
-You must use the generated factory to create instances of your model instead of using the ``new`` operator. For example you should call ``ConferenceFactoryImpl.eINSTANCE.createTalk()`` instead of ``new TalkImpl()``. The factory takes care that all objects are registered in the system and that the OCL operation ``allInstances()`` will work properly.
+When you use the factory to create objects, the factory will take care of proper object registration that are necessary that features like reflection and the OCL operation ``allInstances()`` will work properly.
+For example you call ``ConferenceFactoryImpl.eINSTANCE.createTalk()`` to create a new ``Talk`` object.
+Using the factory is strongly preferred over using the ``new`` operator.
+The following code shows how to use the factory in TypeScript:
 
 ```typescript
 let talk: Talk = ConferenceFactoryImpl.eINSTANCE.createTalk();
