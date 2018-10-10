@@ -1,4 +1,24 @@
 <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+<mat-sidenav-container class="example-container" hasBackdrop="true">
+  <mat-sidenav mode="push" closed #drawer class="sidenav">
+    <img src="./assets/logo.png" width="150"/>
+    <mat-list>
+      <mat-list-item><button routerLink="/program" mat-button><mat-icon>schedule</mat-icon> Program</button></mat-list-item>
+      <mat-list-item><button routerLink="/profile" mat-button><mat-icon>account_circle</mat-icon> Profile</button></mat-list-item>
+      <mat-list-item><button mat-button><mat-icon>settings</mat-icon> Settings</button></mat-list-item>
+    </mat-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <button mat-icon-button (click)="drawer.toggle()"><mat-icon>menu</mat-icon></button>
+      <span>EclipseCon Europe 2018</span>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<!--
+<mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
 <mat-drawer-container class="example-container" hasBackdrop="true">
   <mat-drawer #drawer mode="push" class="sidenav">
     <img src="./assets/logo.png" width="150"/>
@@ -42,14 +62,14 @@
           <mat-icon *ngIf="user.attends.includes(talk)">check</mat-icon>
           <mat-icon *ngIf="user.attends.excludes(talk)">add</mat-icon>
         </button>
-        <!--<mat-button-toggle *ngIf="checked"><mat-icon>add</mat-icon></mat-button-toggle>
-        <mat-button-toggle *ngIf="!checked"><mat-icon>check</mat-icon></mat-button-toggle>-->
+
         <mat-divider></mat-divider>
       </mat-list-item>
 
     </mat-list>
   </mat-drawer-content>
 </mat-drawer-container>
+-->
 
 <!--
 <mat-tab-group>

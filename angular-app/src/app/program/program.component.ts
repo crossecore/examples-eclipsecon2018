@@ -1,57 +1,60 @@
-import {Component, OnInit} from '@angular/core';
-import {MatButtonToggleModule, MatSnackBar} from '@angular/material';
+import { Component, OnInit } from '@angular/core';
 
-import {ConferenceFactoryImpl} from 'conference/ConferenceFactoryImpl';
-//import {ConferencePackageImpl} from 'conference/ConferencePackageImpl';
 import {Talk} from 'conference/Talk';
 import {Track} from 'conference/Track';
 import {Person} from 'conference/Person';
 import {Conference} from 'conference/Conference';
-import {EClass} from 'ecore/EClass';
+import {ConferenceFactoryImpl} from 'conference/ConferenceFactoryImpl';
 
 import * as Papa from 'papaparse';
 
-import PouchDB from 'pouchdb';
-import {ConferencePackageImpl} from '../conference/ConferencePackageImpl';
-
-
-
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app-program',
+  templateUrl: './program.component.html',
+  styleUrls: ['./program.component.css']
 })
-export class AppComponent implements OnInit {
-  //@ViewChild('group') group: MatButtonToggleModule;
+export class ProgramComponent implements OnInit {
 
-  talks: Array<Talk>;
-  conference: Conference;
-  user:Person;
   filteredTalks:Array<Talk>;
   filteredTrack:Track;
-  isAndroid: boolean;
-  eclass:EClass;
+  conference: Conference;
+  user:Person;
 
-  constructor(public snackBar: MatSnackBar) {
+  toggleTrack(track: Track, event) {
 
 
+    if(this.filteredTrack === track){
+      this.filteredTrack = null;
+      this.filteredTalks = this.conference.talks;
 
-    this.talks = new Array<Talk>();
+    }
+    else{
+      this.filteredTrack = track;
+      this.filteredTalks = this.conference.talks.select(t=> t.track.name === track.name);
+
+    }
+
+  }
+
+  toggleAttending(talk: Talk) {
+
+    if(!this.user.attends.containsX(talk)){
+      this.user.attends.add(talk);
+    }
+    else{
+      this.user.attends.remove(talk);
+    }
+  }
+
+  constructor() {
 
     this.conference = ConferenceFactoryImpl.eINSTANCE.createConference();
 
     this.user = ConferenceFactoryImpl.eINSTANCE.createPerson();
 
-    //this.eclass = ConferencePackageImpl.eINSTANCE.getPerson();
-
-    this.isAndroid = navigator.userAgent.toLowerCase().indexOf('android')>-1;
-
     var closure = this;
 
     var conference = this.conference;
-
-    this.test();
-
 
     Papa.parse('assets/eclipsecon.csv', {
       download: true,
@@ -132,8 +135,8 @@ export class AppComponent implements OnInit {
               }
             }
 
-            closure.talks.push(talk)
-            conference.talks.add(talk);
+
+            closure.conference.talks.add(talk);
 
           }
 
@@ -144,111 +147,9 @@ export class AppComponent implements OnInit {
 
     });
 
-
-  }
-
-
-  test(){
-
-
-
-
-
-    let person:Person = ConferenceFactoryImpl.eINSTANCE.createPerson();
-
-
-
-
-    console.log(person.eClass());
-    let talk:Talk = ConferenceFactoryImpl.eINSTANCE.createTalk();
-
-    person.attends.add(talk);
-
-    console.log(talk.attendees.includes___(person)); //returns true
-    console.log(person.attends.includes___(talk)); //returns true
-
-    talk.attendees.remove(person);
-
-    console.log(person.attends.excludes(talk)); //returns true
-    console.log(talk.attendees.excludes(person)); //returns true
-
-  }
-
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 2000,
-    });
-  }
-
-  toggleTrack(track: Track, event) {
-
-
-    if(this.filteredTrack === track){
-      this.filteredTrack = null;
-      this.filteredTalks = this.conference.talks;
-
-      //event.value = null;
-      //event.source.selected = false;
-
-
-
-
-    }
-    else{
-      this.filteredTrack = track;
-      this.filteredTalks = this.conference.talks.select(t=> t.track.name === track.name);
-
-
-
-    }
-
-  }
-
-  toggleChange(group, event) {
-    let toggle = event.source;
-    if (toggle) {
-
-
-      group.value = [toggle.value];
-
-
-    }
-  }
-
-  toggleAttending(talk: Talk) {
-
-    if(!this.user.attends.containsX(talk)){
-      this.user.attends.add(talk);
-    }
-    else{
-      this.user.attends.remove(talk);
-    }
   }
 
   ngOnInit() {
-
-
-    const db = new PouchDB('helloworld');
-    // okay, now we have our database
-
-
-
-    db.put({
-      _id: 'mydoc',
-      title: 'Heroes'
-    }).then(function (response) {
-
-      console.log(response);
-
-      //this.snackBar.open('put complete');
-
-    }).catch(function (err) {
-
-      console.log(err);
-      //this.snackBar.open('put not complete');
-    });
-
   }
-
 
 }

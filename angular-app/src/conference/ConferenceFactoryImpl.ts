@@ -14,6 +14,9 @@ import {VenueImpl} from "conference/VenueImpl";
 import {ConferenceImpl} from "conference/ConferenceImpl";
 import {ConferenceFactory} from "conference/ConferenceFactory";
 import {Organization} from "conference/Organization";
+
+import {ConferencePackageImpl} from 'conference/ConferencePackageImpl';
+
 export class ConferenceFactoryImpl extends EFactoryImpl implements ConferenceFactory{
 	public static eINSTANCE : ConferenceFactory = ConferenceFactoryImpl.init();
 	public static init() : ConferenceFactory 
@@ -23,10 +26,12 @@ export class ConferenceFactoryImpl extends EFactoryImpl implements ConferenceFac
 	
 	public createRoom = () : Room => {
 		var theRoom = new RoomImpl();
+
 		return theRoom;
 	}
 	public createPerson = () : Person => {
 		var thePerson = new PersonImpl();
+		thePerson._eStaticClass = ConferencePackageImpl.eINSTANCE.getPerson();
 		return thePerson;
 	}
 	public createOrganization = () : Organization => {

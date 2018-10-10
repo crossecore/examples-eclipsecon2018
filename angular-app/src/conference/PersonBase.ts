@@ -9,6 +9,7 @@ import {EClass} from "ecore/EClass";
 import {NotificationChain} from "ecore/NotificationChain";
 import {Person} from "conference/Person";
 import {Organization} from "conference/Organization";
+
 //import ENotificationImpl = Ecore.ENotificationImpl;
 //import EClass = Ecore.EClass;
 export class PersonBase
@@ -71,11 +72,6 @@ implements Person
 	  //return Talk.allInstances()->select(t:Talk | (t.speakers->includes(self) or t.attendees->includes(self)) and (t.speakers->includes(other) or t.attendees->includes(other)));
 	};
 
-	protected eStaticClass():EClass{
-		//return ConferencePackageLiterals.PERSON;
-		return null;
-	}
-
 	public eInverseAdd(otherEnd:InternalEObject, featureID:number, msgs:NotificationChain): NotificationChain{
 		switch (featureID) {
 			case ConferencePackageLiterals.PERSON_GIVES:
@@ -115,7 +111,6 @@ implements Person
 		}
 		return msgs;
 	}
-	
 
 	public eGet(featureID:number, resolve:boolean, coreType:boolean):any{
 		switch (featureID) {

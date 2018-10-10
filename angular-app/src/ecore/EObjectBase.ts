@@ -25,6 +25,7 @@ implements EObject
 
 {
 
+
 	
 	public eIsSet(feature:EStructuralFeature): boolean {
 		/*TODO implement function*/ 
@@ -110,10 +111,9 @@ implements EObject
 		return null;
 	};
 
-	protected eStaticClass():EClass{
-		//return EcorePackageLiterals.EOBJECT;
-		return null;
-	}
+
+
+
 
 
 

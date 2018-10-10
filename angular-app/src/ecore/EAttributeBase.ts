@@ -53,8 +53,8 @@ implements EAttribute
 	};
 
 	protected eStaticClass():EClass{
-		return EcorePackageImpl.eINSTANCE.getEAnnotation_();
-		//return null;
+		//return EcorePackageImpl.eINSTANCE.getEAnnotation_();
+		return null;
 	}
 
 

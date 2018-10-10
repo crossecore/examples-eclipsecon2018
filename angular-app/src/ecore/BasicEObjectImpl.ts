@@ -32,6 +32,7 @@ export class BasicEObjectImpl extends BasicNotifierImpl implements EObject, Inte
 
         public _eStaticClass:EClass = null;
 
+
         public eBasicSetContainer(newContainer:InternalEObject , newContainerFeatureID:number,  notifications:NotificationChain):NotificationChain{
             this.eBasicSetContainer_(newContainer, newContainerFeatureID);
 
@@ -136,10 +137,7 @@ export class BasicEObjectImpl extends BasicNotifierImpl implements EObject, Inte
         // Subclasses MUST override this function
         protected eStaticClass():EClass
         {
-            //FIXME causes circular dependency
-            //return EcorePackageImpl.eINSTANCE.getEObject();
-            //return EcorePackageImpl.eINSTANCE.getEObject();
-            return null;
+          return this._eStaticClass;
         }
 
         public eInverseAdd(...args:Array<any>):NotificationChain{
