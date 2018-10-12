@@ -6,10 +6,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { ProgramComponent } from './program/program.component';
 import { ProfileComponent } from './profile/profile.component';
+import { InfoComponent } from './info/info.component';
 
 const appRoutes: Routes = [
   { path: 'program', component: ProgramComponent },
   { path: 'profile', component: ProfileComponent },
+  { path: 'info', component: InfoComponent },
   { path: '',
     redirectTo: '/program',
     pathMatch: 'full'
@@ -21,7 +23,8 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     ProgramComponent,
-    ProfileComponent
+    ProfileComponent,
+    InfoComponent
   ],
   imports: [
     BrowserModule,
