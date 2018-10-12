@@ -7,6 +7,24 @@ import {Conference} from 'conference/Conference';
 import {ConferenceFactoryImpl} from 'conference/ConferenceFactoryImpl';
 
 import * as Papa from 'papaparse';
+import {Adapter} from 'ecore/Adapter';
+import {Notification} from 'ecore/Notification';
+import {NotificationImpl} from 'ecore/NotificationImpl';
+
+class MyAdapter implements Adapter{
+
+  notifyChanged(notification:Notification){
+
+    console.log(notification);
+
+    switch(notification.getEventType()){
+      case NotificationImpl.ADD: console.log("ADD");break;
+      case NotificationImpl.REMOVE: console.log("REMOVE");break;
+      case NotificationImpl.SET: console.log("SET");break;
+    }
+  }
+}
+
 
 @Component({
   selector: 'app-program',
@@ -49,6 +67,8 @@ export class ProgramComponent implements OnInit {
   constructor() {
 
     this.conference = ConferenceFactoryImpl.eINSTANCE.createConference();
+
+    this.conference.eAdapters().push(new MyAdapter());
 
     this.user = ConferenceFactoryImpl.eINSTANCE.createPerson();
 
