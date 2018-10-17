@@ -10,6 +10,12 @@ import * as Papa from 'papaparse';
 import {Adapter} from 'ecore/Adapter';
 import {Notification} from 'ecore/Notification';
 import {NotificationImpl} from 'ecore/NotificationImpl';
+import PouchDB from 'pouchdb';
+import {JsonResource} from 'ecore/JsonResource';
+import {ContentTreeIterator} from 'ecore/ContentTreeIterator';
+import {EObject} from 'ecore/EObject';
+
+
 
 class MyAdapter implements Adapter{
 
@@ -162,10 +168,63 @@ export class ProgramComponent implements OnInit {
 
           closure.filteredTalks = conference.talks;
         }
+
+        closure.importIntoDataBase();
       }
 
 
     });
+
+  }
+
+
+  importIntoDataBase(){
+    const db = new PouchDB('http://localhost:5984/eclipsecon/');
+
+
+    db.info().then(function (result) {
+      if(result.doc_count === 0){
+
+      }
+    }).catch(function (err) {
+      console.log(err);
+    });
+
+
+    let jsonResource:JsonResource = new JsonResource();
+
+
+    let docs = new Array<any>();
+    let treeIterator = new ContentTreeIterator(this.conference);
+
+    //TODO should be conference.eContents.iterator or so
+    while(treeIterator.hasNext()){
+
+      let next = treeIterator.next();
+
+
+
+
+      if(next!=null){
+
+        let json = jsonResource.asJson(next.value);
+
+        docs.push(json);
+
+
+      }
+
+
+
+    }
+
+
+    db.bulkDocs(docs).then(function (result) {
+      // handle result
+    }).catch(function (err) {
+      console.log(err);
+    });
+
 
   }
 
