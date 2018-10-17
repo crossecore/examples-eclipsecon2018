@@ -92,6 +92,23 @@ import {EClass} from "ecore/EClass";
 
 			return result;
 		}
+
+    get eAllReferences():OrderedSet<EReference>{
+
+      var result = new OrderedSet<EReference>();
+      this.eReferences.forEach((a)=>{
+        result.add(a);
+      });
+
+      this.eAllSuperTypes.forEach((t)=>{
+
+        t.eReferences.forEach((a)=>{
+          result.add(a);
+        })
+      });
+
+      return result;
+    }
 	}
 	
 
