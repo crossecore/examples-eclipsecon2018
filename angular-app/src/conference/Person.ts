@@ -3,7 +3,6 @@ import {OrderedSet} from "ecore/OrderedSet";
 import {Talk} from "conference/Talk";
 import {Organization} from "conference/Organization";
 import {Person} from "conference/Person";
-import {Set} from "ecore/Set";
 
 export interface Person
 extends InternalEObject
@@ -17,7 +16,7 @@ extends InternalEObject
 	attends: OrderedSet<Talk>;
 	
 	
-	meetsPersonAt(other:Person): Set<Talk> ;
+	meetsPersonAt(other:Person): Talk ;
 
 }
 
