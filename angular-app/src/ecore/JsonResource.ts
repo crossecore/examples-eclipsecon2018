@@ -3,6 +3,7 @@ import {OrderedSet} from "./OrderedSet";
 import {EAttribute} from "./EAttribute";
 import {EReference} from "./EReference";
 import {Collection} from "./Collection";
+import {BasicEObjectImpl} from './BasicEObjectImpl';
 
 
 export class JsonResource{
@@ -84,7 +85,7 @@ export class JsonResource{
         return result;
     }
 
-    public asJson = (eobject:EObject)=> {
+    public asJson = (eobject:EObject):any=> {
 
         var result:any = {};
 
@@ -94,9 +95,10 @@ export class JsonResource{
         var ereferences = this.validEAllReferences(eobject, eClass.eAllReferences);
 
         //TODO this is specific for the persistence technology (e.g. CouchDB)
-        result["_id"] = this.getId(eobject);
+        //TODO save cast
+        result["_id"] = (eobject as BasicEObjectImpl)._uuid;
 
-        result["_type"] = eClass.ePackage.nsURI + ':' + eClass.name; //TODO
+        result["type"] = eClass.name; //TODO nsPrefix
 
         for(let feature of attributes){
 
@@ -107,25 +109,23 @@ export class JsonResource{
 
             if(feature.many){
 
-              /*
-                var items:Array<any> = eobject.eGet(feature) as Collection<any>;
+
+                var items:Array<EObject> = eobject.eGet(feature) as Array<EObject>;
 
                 var itemIds = new Array<string>();
                 for(var item of items){
 
-                    itemIds.push(this.getId(item));
+                    itemIds.push((item as BasicEObjectImpl)._uuid);
                 }
-                */
+
 
             }
             else{
-                result[feature.name] = this.getId(eobject.eGet(feature));
+                result[feature.name] = (eobject.eGet(feature) as BasicEObjectImpl)._uuid;
             }
         }
 
         return result;
-
-
 
     }
 }
