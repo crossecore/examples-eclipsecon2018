@@ -19,11 +19,27 @@ import {List} from "ecore/List";
 import {EOperation} from "ecore/EOperation";
 import {Resource} from "ecore/Resource";
 import {TreeIterator} from "ecore/TreeIterator";
+import {OrderedSet} from './OrderedSet';
 
 export class BasicEObjectImpl extends BasicNotifierImpl implements EObject, InternalEObject
     {
 
+        public _uuid:string;
 
+        constructor(){
+          super();
+          this._uuid = BasicEObjectImpl.generateUUID();
+        }
+
+        private static generateUUID = function(){
+          var d = new Date().getTime();
+          var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = (d + Math.random()*16)%16 | 0;
+            d = Math.floor(d/16);
+            return (c=='x' ? r : (r&0x7|0x8)).toString(16);
+          });
+          return uuid;
+        };
 
         public static EOPPOSITE_FEATURE_BASE:number = -1;
 
@@ -67,13 +83,24 @@ export class BasicEObjectImpl extends BasicNotifierImpl implements EObject, Inte
 
         public eGet(...args:Array<any>):any {
 
-            if(typeof args[0] === "number" &&
+            if(args.length===1){
+              return this.eGet_EStructuralFeature(args[0]);
+            }
+            else if(args.length===2){
+              return this.eGet_EStructuralFeature_boolean(args[0],args[1]);
+            }
+
+            else if(args.length===3){
+
+              if(typeof args[0] === "number" &&
                 typeof args[1] === "boolean" &&
                 typeof args[2] === "boolean"){
                 return this.eGet_number_boolean_boolean(args[0],args[1],args[2]);
-            }
-            else{
+              }
+              else{
                 return this.eGet_EStructuralFeature_boolean_boolean(args[0],args[1],args[2]);
+              }
+
             }
 
 
@@ -253,10 +280,35 @@ export class BasicEObjectImpl extends BasicNotifierImpl implements EObject, Inte
             return null;
         };
 
-        public eContents(): List<EObject>{
-            /*TODO implement function*/
-            return null;
-        };
+      public eContents(): List<EObject> {
+
+        var result = new OrderedSet<EObject>();
+
+
+        for(let feature of this.eClass().eAllReferences){
+          if(feature.containment){
+
+            if(feature.many){
+
+              var list = this.eGet(feature) as Array<EObject>;
+
+              for(let item of list){
+                //TODO could be addAll
+                result.add(item);
+
+              }
+            }
+            else{
+              result.add(this.eGet(feature));
+            }
+
+
+          }
+
+        }
+
+        return result;
+      };
 
         public eCrossReferences(): List<EObject>{
             /*TODO implement function*/
@@ -269,13 +321,11 @@ export class BasicEObjectImpl extends BasicNotifierImpl implements EObject, Inte
         };
 
         public eGet_EStructuralFeature(feature:EStructuralFeature): any {
-            /*TODO implement function*/
-            return null;
+            return this.eGet_EStructuralFeature_boolean(feature, true);
         };
 
         public eGet_EStructuralFeature_boolean(feature:EStructuralFeature, resolve:boolean): any{
-            /*TODO implement function*/
-            return null;
+          return this.eGet_EStructuralFeature_boolean_boolean(feature, true, true);
         };
 
         public eUnset(feature:EStructuralFeature): void{
