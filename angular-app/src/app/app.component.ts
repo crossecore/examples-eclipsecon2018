@@ -228,25 +228,10 @@ export class AppComponent implements OnInit {
   ngOnInit() {
 
 
-    const db = new PouchDB('helloworld');
-    // okay, now we have our database
 
 
 
-    db.put({
-      _id: 'mydoc',
-      title: 'Heroes'
-    }).then(function (response) {
 
-      console.log(response);
-
-      //this.snackBar.open('put complete');
-
-    }).catch(function (err) {
-
-      console.log(err);
-      //this.snackBar.open('put not complete');
-    });
 
   }
 
