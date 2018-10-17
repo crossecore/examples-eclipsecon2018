@@ -96,7 +96,7 @@ console.log(talk.attendees.excludes(person)); //returns true
 ## Object Constraint Langauge
 ### Validation
 
-The OCL invariant ``noConflicts`` asserts that all ``Talks`` a ``Person`` *self* ``attends`` are not temporally overlapping.
+The OCL invariant ``noConflict`` asserts that all ``Talks`` a ``Person`` *self* ``attends`` are not temporally overlapping.
 
 ```javascript
 invariant noConflict:
@@ -204,4 +204,17 @@ Starting a web server and open the app in a browser.
 
 ```bash
 ng serve --open
+```
+
+
+## Tabris App
+
+https://docs.tabris.com/latest/build.html
+
+```bash
+npm install -g tabris-cli
+```
+
+```bash
+tabris build android
 ```
