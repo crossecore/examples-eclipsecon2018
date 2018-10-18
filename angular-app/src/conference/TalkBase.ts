@@ -1,4 +1,5 @@
 import {ConferencePackageLiterals} from "conference/ConferencePackageLiterals";
+import {AbstractCollection} from "ecore/AbstractCollection";
 import {ENotificationImpl} from "ecore/ENotificationImpl";
 import {Room} from "conference/Room";
 import {BasicEObjectImpl} from "ecore/BasicEObjectImpl";
@@ -6,6 +7,7 @@ import {EClass} from "ecore/EClass";
 import {Person} from "conference/Person";
 import {InternalEObject} from "ecore/InternalEObject";
 import {OrderedSet} from "ecore/OrderedSet";
+import {EObject} from "ecore/EObject";
 import {NotificationImpl} from "ecore/NotificationImpl";
 import {Talk} from "conference/Talk";
 import {Track} from "conference/Track";
@@ -119,11 +121,11 @@ import {DiagnosticChain} from "ecore/DiagnosticChain";
 				
 				//public eInverseRemoveFromTalk = this.eInverseRemove;
 			
-				public basicSetRoom(newobj:Room, msgs:NotificationChain):NotificationChain {
-					let oldobj = this._room;
-					this._room = newobj;
+				public basicSetTrack(newobj:Track, msgs:NotificationChain):NotificationChain {
+					let oldobj = this._track;
+					this._track = newobj;
 					if (this.eNotificationRequired()) {
-						let notification = new ENotificationImpl(this, NotificationImpl.SET, ConferencePackageLiterals.TALK_ROOM, oldobj, newobj);
+						let notification = new ENotificationImpl(this, NotificationImpl.SET, ConferencePackageLiterals.TALK_TRACK, oldobj, newobj);
 						if (msgs == null){
 							msgs = notification;
 						}
@@ -133,11 +135,11 @@ import {DiagnosticChain} from "ecore/DiagnosticChain";
 					}
 					return msgs;
 				}
-				public basicSetTrack(newobj:Track, msgs:NotificationChain):NotificationChain {
-					let oldobj = this._track;
-					this._track = newobj;
+				public basicSetRoom(newobj:Room, msgs:NotificationChain):NotificationChain {
+					let oldobj = this._room;
+					this._room = newobj;
 					if (this.eNotificationRequired()) {
-						let notification = new ENotificationImpl(this, NotificationImpl.SET, ConferencePackageLiterals.TALK_TRACK, oldobj, newobj);
+						let notification = new ENotificationImpl(this, NotificationImpl.SET, ConferencePackageLiterals.TALK_ROOM, oldobj, newobj);
 						if (msgs == null){
 							msgs = notification;
 						}
@@ -169,17 +171,51 @@ import {DiagnosticChain} from "ecore/DiagnosticChain";
 					//return this.eGetFromBasicEObjectImpl(featureID, resolve, coreType);
 					return super.eGet(featureID, resolve, coreType);
 				}
-				//public eGetFromTalk = this.eGet;
+				
+				public eSet_number_any(featureID:number, newValue:any):void {
+					switch (featureID) {
+						case ConferencePackageLiterals.TALK_TITLE:
+							this.title = <string> newValue;
+							return;
+						case ConferencePackageLiterals.TALK_TIMEBEGIN:
+							this.timeBegin = <Date> newValue;
+							return;
+						case ConferencePackageLiterals.TALK_TIMEEND:
+							this.timeEnd = <Date> newValue;
+							return;
+						case ConferencePackageLiterals.TALK_TRACK:
+							this.track = <Track> newValue;
+							return;
+						case ConferencePackageLiterals.TALK_ROOM:
+							this.room = <Room> newValue;
+							return;
+						case ConferencePackageLiterals.TALK_SPEAKERS:
+							this.speakers.clear();
+							this.speakers.concat((newValue as AbstractCollection<EObject>).map(i => i as Person));
+							return;
+						case ConferencePackageLiterals.TALK_ATTENDEES:
+							this.attendees.clear();
+							this.attendees.concat((newValue as AbstractCollection<EObject>).map(i => i as Person));
+							return;
+					}
+					super.eSet_number_any(featureID, newValue);
+				}
 
 				
 				//TODO context is map<object, object>
 				public beginBeforeEnd(diagnostics:DiagnosticChain, context:any):boolean
 				{
+					/*
+					self.timeBegin < self.timeEnd;
+					*/
 					return true;
 				}
 				//TODO context is map<object, object>
 				public hasDuration(diagnostics:DiagnosticChain, context:any):boolean
 				{
+					/*
+					self.timeBegin <> self.timeEnd;
+					*/
 					return true;
 				}
 			}

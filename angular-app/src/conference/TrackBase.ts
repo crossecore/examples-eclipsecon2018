@@ -1,13 +1,13 @@
-import {InternalEObject} from "ecore/InternalEObject";
 import {Conference} from "conference/Conference";
-import {OrderedSet} from "ecore/OrderedSet";
 import {ConferencePackageLiterals} from "conference/ConferencePackageLiterals";
 import {ENotificationImpl} from "ecore/ENotificationImpl";
+import {BasicEObjectImpl} from "ecore/BasicEObjectImpl";
+import {EClass} from "ecore/EClass";
+import {InternalEObject} from "ecore/InternalEObject";
+import {OrderedSet} from "ecore/OrderedSet";
 import {NotificationImpl} from "ecore/NotificationImpl";
 import {Track} from "conference/Track";
 import {Talk} from "conference/Talk";
-import {BasicEObjectImpl} from "ecore/BasicEObjectImpl";
-import {EClass} from "ecore/EClass";
 import {NotificationChain} from "ecore/NotificationChain";
 //import ENotificationImpl = Ecore.ENotificationImpl;
 //import EClass = Ecore.EClass;
@@ -104,7 +104,18 @@ import {NotificationChain} from "ecore/NotificationChain";
 					//return this.eGetFromNamedElement(featureID, resolve, coreType);
 					return super.eGet(featureID, resolve, coreType);
 				}
-				//public eGetFromTrack = this.eGet;
+				
+				public eSet_number_any(featureID:number, newValue:any):void {
+					switch (featureID) {
+						case ConferencePackageLiterals.TRACK_NAME:
+							this.name = <string> newValue;
+							return;
+						case ConferencePackageLiterals.TRACK_CONFERENCE:
+							this.conference = <Conference> newValue;
+							return;
+					}
+					super.eSet_number_any(featureID, newValue);
+				}
 
 				
 			}

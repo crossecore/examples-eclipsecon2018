@@ -1,14 +1,16 @@
-import {InternalEObject} from "ecore/InternalEObject";
-import {OrderedSet} from "ecore/OrderedSet";
 import {ConferencePackageLiterals} from "conference/ConferencePackageLiterals";
+import {AbstractCollection} from "ecore/AbstractCollection";
 import {ENotificationImpl} from "ecore/ENotificationImpl";
-import {NotificationImpl} from "ecore/NotificationImpl";
-import {Talk} from "conference/Talk";
 import {BasicEObjectImpl} from "ecore/BasicEObjectImpl";
 import {EClass} from "ecore/EClass";
+import {Person} from "conference/Person";
+import {InternalEObject} from "ecore/InternalEObject";
+import {OrderedSet} from "ecore/OrderedSet";
+import {EObject} from "ecore/EObject";
+import {NotificationImpl} from "ecore/NotificationImpl";
+import {Talk} from "conference/Talk";
 import {NotificationChain} from "ecore/NotificationChain";
 import {DiagnosticChain} from "ecore/DiagnosticChain";
-import {Person} from "conference/Person";
 import {Organization} from "conference/Organization";
 //import ENotificationImpl = Ecore.ENotificationImpl;
 //import EClass = Ecore.EClass;
@@ -135,12 +137,37 @@ import {Organization} from "conference/Organization";
 					//return this.eGetFromBasicEObjectImpl(featureID, resolve, coreType);
 					return super.eGet(featureID, resolve, coreType);
 				}
-				//public eGetFromPerson = this.eGet;
+				
+				public eSet_number_any(featureID:number, newValue:any):void {
+					switch (featureID) {
+						case ConferencePackageLiterals.PERSON_FIRSTNAME:
+							this.firstName = <string> newValue;
+							return;
+						case ConferencePackageLiterals.PERSON_LASTNAME:
+							this.lastName = <string> newValue;
+							return;
+						case ConferencePackageLiterals.PERSON_WORKSFOR:
+							this.worksFor = <Organization> newValue;
+							return;
+						case ConferencePackageLiterals.PERSON_GIVES:
+							this.gives.clear();
+							this.gives.concat((newValue as AbstractCollection<EObject>).map(i => i as Talk));
+							return;
+						case ConferencePackageLiterals.PERSON_ATTENDS:
+							this.attends.clear();
+							this.attends.concat((newValue as AbstractCollection<EObject>).map(i => i as Talk));
+							return;
+					}
+					super.eSet_number_any(featureID, newValue);
+				}
 
 				
 				//TODO context is map<object, object>
 				public noConflict(diagnostics:DiagnosticChain, context:any):boolean
 				{
+					/*
+					self.attends->forAll(t1:Talk | self.attends->forAll(t2:Talk| (t1.timeBegin < t2.timeBegin and t1.timeEnd <= t2.timeBegin) or (t2.timeBegin < t1.timeBegin and t2.timeEnd <= t1.timeBegin)));
+					*/
 					return true;
 				}
 			}

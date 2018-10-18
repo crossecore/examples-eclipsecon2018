@@ -1,10 +1,10 @@
-import {InternalEObject} from "ecore/InternalEObject";
-import {OrderedSet} from "ecore/OrderedSet";
 import {ConferencePackageLiterals} from "conference/ConferencePackageLiterals";
 import {ENotificationImpl} from "ecore/ENotificationImpl";
-import {NotificationImpl} from "ecore/NotificationImpl";
 import {BasicEObjectImpl} from "ecore/BasicEObjectImpl";
 import {EClass} from "ecore/EClass";
+import {InternalEObject} from "ecore/InternalEObject";
+import {OrderedSet} from "ecore/OrderedSet";
+import {NotificationImpl} from "ecore/NotificationImpl";
 import {NotificationChain} from "ecore/NotificationChain";
 import {Organization} from "conference/Organization";
 //import ENotificationImpl = Ecore.ENotificationImpl;
@@ -40,7 +40,15 @@ import {Organization} from "conference/Organization";
 					//return this.eGetFromNamedElement(featureID, resolve, coreType);
 					return super.eGet(featureID, resolve, coreType);
 				}
-				//public eGetFromOrganization = this.eGet;
+				
+				public eSet_number_any(featureID:number, newValue:any):void {
+					switch (featureID) {
+						case ConferencePackageLiterals.ORGANIZATION_NAME:
+							this.name = <string> newValue;
+							return;
+					}
+					super.eSet_number_any(featureID, newValue);
+				}
 
 				
 			}

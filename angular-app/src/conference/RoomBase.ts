@@ -40,7 +40,15 @@ import {NotificationChain} from "ecore/NotificationChain";
 					//return this.eGetFromNamedElement(featureID, resolve, coreType);
 					return super.eGet(featureID, resolve, coreType);
 				}
-				//public eGetFromRoom = this.eGet;
+				
+				public eSet_number_any(featureID:number, newValue:any):void {
+					switch (featureID) {
+						case ConferencePackageLiterals.ROOM_NAME:
+							this.name = <string> newValue;
+							return;
+					}
+					super.eSet_number_any(featureID, newValue);
+				}
 
 				
 			}

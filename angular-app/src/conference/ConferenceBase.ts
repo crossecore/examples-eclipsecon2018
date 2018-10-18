@@ -1,18 +1,19 @@
 import {Conference} from "conference/Conference";
 import {ConferencePackageLiterals} from "conference/ConferencePackageLiterals";
+import {AbstractCollection} from "ecore/AbstractCollection";
 import {ENotificationImpl} from "ecore/ENotificationImpl";
 import {BasicEObjectImpl} from "ecore/BasicEObjectImpl";
 import {EClass} from "ecore/EClass";
 import {Person} from "conference/Person";
 import {InternalEObject} from "ecore/InternalEObject";
 import {OrderedSet} from "ecore/OrderedSet";
+import {EObject} from "ecore/EObject";
 import {NotificationImpl} from "ecore/NotificationImpl";
 import {Talk} from "conference/Talk";
 import {Track} from "conference/Track";
 import {Venue} from "conference/Venue";
 import {NotificationChain} from "ecore/NotificationChain";
 import {Organization} from "conference/Organization";
-import {EStructuralFeature} from '../ecore/EStructuralFeature';
 //import ENotificationImpl = Ecore.ENotificationImpl;
 //import EClass = Ecore.EClass;
 		
@@ -136,11 +137,11 @@ import {EStructuralFeature} from '../ecore/EStructuralFeature';
 				
 				//public eInverseRemoveFromConference = this.eInverseRemove;
 			
-				public basicSetVenue(newobj:Venue, msgs:NotificationChain):NotificationChain {
-					let oldobj = this._venue;
-					this._venue = newobj;
+				public basicSetAttendees(newobj:Person, msgs:NotificationChain):NotificationChain {
+					let oldobj = this._attendees;
+					this._attendees = newobj;
 					if (this.eNotificationRequired()) {
-						let notification = new ENotificationImpl(this, NotificationImpl.SET, ConferencePackageLiterals.CONFERENCE_VENUE, oldobj, newobj);
+						let notification = new ENotificationImpl(this, NotificationImpl.SET, ConferencePackageLiterals.CONFERENCE_ATTENDEES, oldobj, newobj);
 						if (msgs == null){
 							msgs = notification;
 						}
@@ -150,11 +151,11 @@ import {EStructuralFeature} from '../ecore/EStructuralFeature';
 					}
 					return msgs;
 				}
-				public basicSetAttendees(newobj:Person, msgs:NotificationChain):NotificationChain {
-					let oldobj = this._attendees;
-					this._attendees = newobj;
+				public basicSetVenue(newobj:Venue, msgs:NotificationChain):NotificationChain {
+					let oldobj = this._venue;
+					this._venue = newobj;
 					if (this.eNotificationRequired()) {
-						let notification = new ENotificationImpl(this, NotificationImpl.SET, ConferencePackageLiterals.CONFERENCE_ATTENDEES, oldobj, newobj);
+						let notification = new ENotificationImpl(this, NotificationImpl.SET, ConferencePackageLiterals.CONFERENCE_VENUE, oldobj, newobj);
 						if (msgs == null){
 							msgs = notification;
 						}
@@ -184,7 +185,33 @@ import {EStructuralFeature} from '../ecore/EStructuralFeature';
 					//return this.eGetFromNamedElement(featureID, resolve, coreType);
 					return super.eGet(featureID, resolve, coreType);
 				}
-
+				
+				public eSet_number_any(featureID:number, newValue:any):void {
+					switch (featureID) {
+						case ConferencePackageLiterals.CONFERENCE_NAME:
+							this.name = <string> newValue;
+							return;
+						case ConferencePackageLiterals.CONFERENCE_VENUE:
+							this.venue = <Venue> newValue;
+							return;
+						case ConferencePackageLiterals.CONFERENCE_TALKS:
+							this.talks.clear();
+							this.talks.concat((newValue as AbstractCollection<EObject>).map(i => i as Talk));
+							return;
+						case ConferencePackageLiterals.CONFERENCE_ATTENDEES:
+							this.attendees = <Person> newValue;
+							return;
+						case ConferencePackageLiterals.CONFERENCE_TRACKS:
+							this.tracks.clear();
+							this.tracks.concat((newValue as AbstractCollection<EObject>).map(i => i as Track));
+							return;
+						case ConferencePackageLiterals.CONFERENCE_ORGANIZATIONS:
+							this.organizations.clear();
+							this.organizations.concat((newValue as AbstractCollection<EObject>).map(i => i as Organization));
+							return;
+					}
+					super.eSet_number_any(featureID, newValue);
+				}
 
 				
 			}

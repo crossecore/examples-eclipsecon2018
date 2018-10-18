@@ -1,10 +1,12 @@
 import {ConferencePackageLiterals} from "conference/ConferencePackageLiterals";
+import {AbstractCollection} from "ecore/AbstractCollection";
 import {ENotificationImpl} from "ecore/ENotificationImpl";
 import {Room} from "conference/Room";
 import {BasicEObjectImpl} from "ecore/BasicEObjectImpl";
 import {EClass} from "ecore/EClass";
 import {InternalEObject} from "ecore/InternalEObject";
 import {OrderedSet} from "ecore/OrderedSet";
+import {EObject} from "ecore/EObject";
 import {NotificationImpl} from "ecore/NotificationImpl";
 import {Venue} from "conference/Venue";
 import {NotificationChain} from "ecore/NotificationChain";
@@ -54,7 +56,19 @@ import {NotificationChain} from "ecore/NotificationChain";
 					//return this.eGetFromNamedElement(featureID, resolve, coreType);
 					return super.eGet(featureID, resolve, coreType);
 				}
-				//public eGetFromVenue = this.eGet;
+				
+				public eSet_number_any(featureID:number, newValue:any):void {
+					switch (featureID) {
+						case ConferencePackageLiterals.VENUE_NAME:
+							this.name = <string> newValue;
+							return;
+						case ConferencePackageLiterals.VENUE_ROOMS:
+							this.rooms.clear();
+							this.rooms.concat((newValue as AbstractCollection<EObject>).map(i => i as Room));
+							return;
+					}
+					super.eSet_number_any(featureID, newValue);
+				}
 
 				
 			}
