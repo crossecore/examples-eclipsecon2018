@@ -193,16 +193,13 @@ implements EClass
 		return null;
 	};
 	
-	public getClassifierID(): number {
-		/*TODO implement function*/ 
-		return null;
-	};
+
 	public getEStructuralFeature(...args:Array<any>):any {
-		if(args.length === 1){
+		if(args.length === 1 && typeof args[0] === "number"){
 			
 			return this.getEStructuralFeature_number(args[0]);
 		}
-		if(args.length === 1){
+		if(args.length === 1 && typeof args[0] === "string"){
 			
 			return this.getEStructuralFeature_string(args[0]);
 		}
@@ -213,8 +210,15 @@ implements EClass
 		return null;
 	};
 	public getEStructuralFeature_string(featureName:string): EStructuralFeature {
-		/*TODO implement function*/ 
-		return null;
+    for(let feature of this.eAllStructuralFeatures)
+    {
+      if (feature.name == featureName)
+      {
+        return feature;
+      }
+    }
+
+    return null;
 	};
 	
 	public getOperationCount(): number {
