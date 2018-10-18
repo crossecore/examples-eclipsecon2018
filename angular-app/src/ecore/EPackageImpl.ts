@@ -84,7 +84,18 @@ import {EClassImpl} from "ecore/EClassImpl";
 		 */
 
 
+    public getEClassifier(name:string): EClassifier {
+      for (let eclassifier of this.eClassifiers)
+      {
 
+        if (eclassifier.name===name)
+        {
+          return eclassifier;
+        }
+      }
+
+      return null;
+    };
 
 
 		protected createEClass = (id:number):EClass =>
