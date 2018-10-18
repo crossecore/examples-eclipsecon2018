@@ -1,6 +1,6 @@
 # App Architecture
 
-This tutorial presents how CrossEcore TypeScript can be used in a browser based [Angular](https://angular.io/) app with the [Angular Material](https://v5.material.angular.io/) user interface or as a hybrid app with a [Tabris](https://tabris.com/) user interface.
+This showcase presents how CrossEcore TypeScript can be used in a browser based [Angular](https://angular.io/) app with the [Angular Material](https://v5.material.angular.io/) user interface or as a hybrid app with a [Tabris](https://tabris.com/) user interface.
 It also shows how Ecore models can be stored in the document-based NoSQL database [PouchDB](https://pouchdb.com/). PouchDB synchronizes with a remote [Apache CouchDB](http://couchdb.apache.org/) and stores the data locally on the end-user devices with the aid of the WebSQL adapter in the web browser and with the SQLite adapter in the hybrid app.
 
 
@@ -19,10 +19,36 @@ A ``Talk`` takes place in one ``Room``.
 
 ## Persistence
 
-## Switches
+If you have worked with the Eclipse Modeling Framework before, you might be familiar with the default persistence technology XMI which reades from and writes to models as XML.
+As a side note, CrossEcore comes with an XMIResource that allows you to read and write your existing XMI models.
+
+This showcase instead uses a document-based NoSQL database as persistence technology.
+This app has three memory layers:
+The first layer is a remote CouchDB database.
+The second layer is a local PouchDB database.
+The second layer allows the user to continue working even if the Internet connection is lost.
+CouchDB and PouchDB use JSON as serialization format.
+The Angular app uses the [WebSQL adapter of PouchDB](https://pouchdb.com/adapters.html).
+The Tabris app uses the [SQLite adapter of PouchDB](https://pouchdb.com/adapters.html).
+The model that is stored in-memory can be seen as a third, non-persistent layer.
+
+PouchDB comes with a [synchronization](https://pouchdb.com/api.html#sync) mechanism that keeps the remote and local database synchronized.
+The following code starts a continuous synchronization between the local database *eclipsecon* and the remote database *http://localhost:5984/eclipsecon/*;
+
+```typescript
+PouchDB.sync('eclipsecon', 'http://localhost:5984/eclipsecon/', {
+  live: true,
+  retry: true
+});
+```
+
+When the app starts, it initializes the sychronization.
+If the local database is up-to-date, the app iterates over all JSON documents and uses the Factory to create objects the objects and resolves cross-references.
+Subsequent changes from the remote database are continuously propagated to the second and third layer.
+The propagation of changes from the third layer to the upper layers is done by  notifications/adapters that is described in the following section:
+
 
 ## Notifications
-
 
 
 ```typescript
