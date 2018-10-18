@@ -2,8 +2,10 @@ import {Conference} from "conference/Conference";
 import {TrackImpl} from "conference/TrackImpl";
 import {Room} from "conference/Room";
 import {ConferencePackageImpl} from "conference/ConferencePackageImpl";
+import {EClass} from "ecore/EClass";
 import {Person} from "conference/Person";
 import {OrganizationImpl} from "conference/OrganizationImpl";
+import {EObject} from "ecore/EObject";
 import {Track} from "conference/Track";
 import {Talk} from "conference/Talk";
 import {EFactoryImpl} from "ecore/EFactoryImpl";
@@ -91,5 +93,19 @@ export class ConferenceFactoryImpl extends EFactoryImpl implements ConferenceFac
 		VenueImpl.allInstances_.add(theVenue);
 		
 		return theVenue;
+	}
+	
+	public create(eClass:EClass):EObject {
+		switch (eClass.getClassifierID()) {
+			case ConferencePackageImpl.ROOM: return this.createRoom();
+			case ConferencePackageImpl.PERSON: return this.createPerson();
+			case ConferencePackageImpl.ORGANIZATION: return this.createOrganization();
+			case ConferencePackageImpl.TRACK: return this.createTrack();
+			case ConferencePackageImpl.TALK: return this.createTalk();
+			case ConferencePackageImpl.CONFERENCE: return this.createConference();
+			case ConferencePackageImpl.VENUE: return this.createVenue();
+			default:
+				throw new Error("The class '" + eClass.name + "' is not a valid classifier");
+		}
 	}
 }
