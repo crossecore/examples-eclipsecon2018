@@ -41,7 +41,7 @@ export class JsonResource{
         for(let feature of features){
 
 
-            if(!feature.transient){
+            if(!feature.transient && !feature.derived){
 
                 if(eobject.eGet(feature) != null){
 
@@ -67,7 +67,7 @@ export class JsonResource{
         for(let feature of features){
 
 
-            if(!feature.transient){
+            if(!feature.transient && !feature.derived){
 
                 if(eobject.eGet(feature) != null){
 
@@ -116,6 +116,7 @@ export class JsonResource{
                 for(var item of items){
 
                     itemIds.push((item as BasicEObjectImpl)._uuid);
+                    result[feature.name] = itemIds;
                 }
 
 
