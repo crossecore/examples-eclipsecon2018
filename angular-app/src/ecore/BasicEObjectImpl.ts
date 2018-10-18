@@ -271,9 +271,24 @@ export class BasicEObjectImpl extends BasicNotifierImpl implements EObject, Inte
         };
 
         public eSet(feature:EStructuralFeature, newValue:any): void {
-            /*TODO implement function*/
-            return null;
+          let featureID = this.eDerivedStructuralFeatureID_EStructuralFeature(feature);
+          /*
+          if (featureID >= 0)
+          {
+          */
+          this.eSet_number_any(featureID, newValue);
+
+          /*}
+          else
+          {
+              eOpenSet(eFeature, newValue);
+          }
+          */
         };
+
+      public eSet_number_any(featureId:number, newValue:any): void {
+          //is overridden by subclasses
+      };
 
         public eResource(): Resource {
             /*TODO implement function*/
@@ -348,9 +363,6 @@ export class BasicEObjectImpl extends BasicNotifierImpl implements EObject, Inte
             return undefined;
         }
 
-        eDerivedStructuralFeatureID(baseFeatureID: number, baseClass: Function): number {
-            return undefined;
-        }
 
         eDerivedOperationID(baseOperationID: number, baseClass: Function): number {
             return undefined;
