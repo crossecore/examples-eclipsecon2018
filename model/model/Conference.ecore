@@ -11,6 +11,12 @@
   </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="Room" eSuperTypes="#//NamedElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="Person">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="noConflict"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="noConflict" value="self.attends->forAll(t1:Talk | self.attends->forAll(t2:Talk| (t1.timeBegin &lt; t2.timeBegin and t1.timeEnd &lt;= t2.timeBegin) or (t2.timeBegin &lt; t1.timeBegin and t2.timeEnd &lt;= t1.timeBegin)))"/>
+    </eAnnotations>
     <eOperations name="meetsPersonAt" ordered="false" upperBound="-1" eType="#//Talk">
       <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
         <details key="body" value="Talk.allInstances()->select(t:Talk | (t.speakers->includes(self) or t.attendees->includes(self)) and (t.speakers->includes(other) or t.attendees->includes(other)))"/>
@@ -55,18 +61,12 @@
         eType="#//Person" eOpposite="#//Person/attends"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Conference" eSuperTypes="#//NamedElement">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="noConflict"/>
-    </eAnnotations>
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="noConflict" value="self.talks->forAll(t1:Talk | self.talks->forAll(t2:Talk| (t1.timeBegin &lt; t2.timeBegin and t1.timeEnd &lt;= t2.timeBegin) or (t2.timeBegin &lt; t1.timeBegin and t2.timeEnd &lt;= t1.timeBegin)))"/>
-    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="venue" eType="#//Venue"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="talks" upperBound="-1"
         eType="#//Talk" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attendees" eType="#//Person"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attendees" upperBound="-1"
+        eType="#//Person" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="tracks" upperBound="-1"
         eType="#//Track" containment="true" eOpposite="#//Track/conference"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="organizations" upperBound="-1"
