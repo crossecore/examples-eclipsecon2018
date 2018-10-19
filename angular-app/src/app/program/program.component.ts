@@ -25,6 +25,9 @@ import {EReferenceImpl} from 'ecore/EReferenceImpl';
 import {EStructuralFeature} from 'ecore/EStructuralFeature';
 import {BasicEObjectImpl} from 'ecore/BasicEObjectImpl';
 import {AbstractCollection} from 'ecore/AbstractCollection';
+import {ConferenceImpl} from 'conference/ConferenceImpl';
+import {Organization} from '../../conference/Organization';
+
 
 
 interface EObjectRegistry{
@@ -44,15 +47,31 @@ interface ResolveJob{
 
 class MyAdapter implements Adapter{
 
+
   notifyChanged(notification:Notification){
 
-    console.log(notification);
 
-    switch(notification.getEventType()){
-      case NotificationImpl.ADD: console.log("ADD");break;
-      case NotificationImpl.REMOVE: console.log("REMOVE");break;
-      case NotificationImpl.SET: console.log("SET");break;
+    let notifier = notification.getNotifier();
+
+    if(notifier!==null){
+      let newDoc = new JsonResource(ConferencePackageImpl.eINSTANCE, ConferenceFactoryImpl.eINSTANCE).asJson(notifier);
+
+      const local_db = new PouchDB('eclipsecon');
+
+
+      local_db.get((notifier as BasicEObjectImpl)._uuid)
+        .then(function(currentDoc){
+          newDoc["_rev"] = currentDoc._rev;
+
+          return local_db.put(newDoc);
+        })
+        .then(function (response) {
+        console.log(response);
+      }).catch(function (err) {
+        console.log(err);
+      });
     }
+
   }
 }
 
@@ -74,6 +93,10 @@ export class ProgramComponent implements OnInit {
 
   resolveJobs:ResolveJobRegistry;
   eobjectRegistry:EObjectRegistry;
+
+  initialized:boolean = false;
+
+  jsonResource:JsonResource;
 
   toggleTrack(track: Track, event) {
 
@@ -104,10 +127,10 @@ export class ProgramComponent implements OnInit {
   constructor() {
 
     this.conference = ConferenceFactoryImpl.eINSTANCE.createConference();
-
-    //this.conference.eAdapters().push(new MyAdapter());
+    this.jsonResource = new JsonResource(ConferencePackageImpl.eINSTANCE, ConferenceFactoryImpl.eINSTANCE);
 
     this.user = ConferenceFactoryImpl.eINSTANCE.createPerson();
+
 
     this.efactory = ConferenceFactoryImpl.eINSTANCE;
     this.epackage = ConferencePackageImpl.eINSTANCE;
@@ -117,11 +140,11 @@ export class ProgramComponent implements OnInit {
 
     var closure = this;
 
-    var conference = this.conference;
+
 
     this.synchronize();
 
-
+/*
 
     Papa.parse('assets/eclipsecon.csv', {
       download: true,
@@ -147,8 +170,22 @@ export class ProgramComponent implements OnInit {
 
             talk.title = rawTitle;
 
-            var speaker = ConferenceFactoryImpl.eINSTANCE.createPerson();
 
+            var organization:Organization = null;
+            if(rawOrganization!==undefined){
+
+              if(closure.conference.organizations.select(a => a.name === rawOrganization).isEmpty()){
+
+                organization = ConferenceFactoryImpl.eINSTANCE.createOrganization();
+                organization.name = rawOrganization;
+
+                closure.conference.organizations.add(organization);
+
+              }
+              else{
+                organization = closure.conference.organizations.select(a => a.name === rawOrganization).any(t=>true);
+              }
+            }
 
             if(rawSpeakers!==undefined){
               var index = rawSpeakers.indexOf('(');
@@ -156,12 +193,31 @@ export class ProgramComponent implements OnInit {
               if(index > -1){
                 var name = rawSpeakers.substring(0, index - 1);
                 var parts = name.split(' ');
-                speaker.firstName = parts[0];
-                speaker.lastName = parts[1];
-                talk.speakers.push(speaker);
+                var firstName = parts[0];
+                var lastName = parts[1];
+
+
+                var speaker:Person = null;
+                if(closure.conference.attendees.select(a => a.firstName === firstName && a.lastName ===lastName).isEmpty()){
+
+                  speaker = ConferenceFactoryImpl.eINSTANCE.createPerson();
+                  speaker.firstName = firstName;
+                  speaker.lastName = lastName;
+                  closure.conference.attendees.add(speaker);
+
+                }
+                else{
+                  speaker = closure.conference.attendees.select(a => a.firstName === firstName && a.lastName ===lastName).any(t=>true);
+                }
+
+                talk.speakers.add(speaker);
+                closure.conference.talks.add(talk);
               }
 
-              speaker.worksFor = rawOrganization;
+              if(organization!==null){
+                speaker.worksFor = organization;
+              }
+
             }
 
             if(rawTrack!==undefined){
@@ -171,13 +227,13 @@ export class ProgramComponent implements OnInit {
 
 
 
-              if(conference.tracks.select(t => t.name ===rawTrack).isEmpty()){
+              if(closure.conference.tracks.select(t => t.name ===rawTrack).isEmpty()){
                 track = ConferenceFactoryImpl.eINSTANCE.createTrack();
                 track.name = rawTrack;
-                conference.tracks.add(track);
+                closure.conference.tracks.add(track);
               }
               else{
-                track = conference.tracks.select(t=>t.name === rawTrack).any(t=>true);
+                track = closure.conference.tracks.select(t=>t.name === rawTrack).any(t=>true);
               }
 
               talk.track = track;
@@ -185,7 +241,7 @@ export class ProgramComponent implements OnInit {
             }
 
             if(rawTime!==undefined){
-              let match = rawTime.match(/(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday), (January|February|March|April|May|June|July|August|Sepetember|October|November|December) (\d{1,2}), (\d{4}) - (\d{2}):(\d{2}) to (\d{2}):(\d{2})/);
+              let match = rawTime.match(/(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday), (January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2}), (\d{4}) - (\d{2}):(\d{2}) to (\d{2}):(\d{2})/);
 
               if(match !== null){
                 let dayofweek = match[1];
@@ -203,20 +259,20 @@ export class ProgramComponent implements OnInit {
             }
 
 
-            closure.conference.talks.add(talk);
-
           }
 
-          closure.filteredTalks = conference.talks;
+
         }
 
-        //closure.importIntoDataBase();
+        closure.importIntoDataBase();
       }
 
 
 
 
     });
+
+*/
 
   }
 
@@ -226,15 +282,13 @@ export class ProgramComponent implements OnInit {
     let closure = this;
     const local_db = new PouchDB('eclipsecon');
 
+    const user_db = new PouchDB('user');
+
+
     PouchDB.sync('eclipsecon', 'http://localhost:5984/eclipsecon/', {
       live: true,
       retry: true
     }).on('change', function (info) {
-
-
-      //TODO only direction 'pull'
-      info.change.docs;
-
 
 
     }).on('paused', function (err) {
@@ -242,68 +296,109 @@ export class ProgramComponent implements OnInit {
       //TODO do full loading just once:
 
 
+
       local_db.allDocs({
         include_docs: true,
         attachments: true
       }).then(function (result) {
 
-        for(let row of result.rows){
+        if(!closure.initialized){
 
-          let doc = row.doc;
+          closure.initialized = true;
+          for (let row of result.rows) {
 
-          let classifierId = doc['type'];
+            let eobject = closure.jsonResource.fromJson(row.doc);
 
-          let eclassifier = closure.epackage.getEClassifier(classifierId);
+            if(eobject instanceof ConferenceImpl){
+              closure.conference = eobject as Conference;
+              closure.filteredTalks = closure.conference.talks;
+            }
 
-          if(eclassifier instanceof EClassImpl){
+/*            let doc = row.doc;
 
-            let eclass = eclassifier as EClass;
+            let classifierId = doc['type'];
 
-            let eobject = closure.efactory.create(eclass);
+            let eclassifier = closure.epackage.getEClassifier(classifierId);
 
-            (eobject as BasicEObjectImpl)._uuid = doc._id;
+            if (eclassifier instanceof EClassImpl) {
 
-            closure.eobjectRegistry[doc._id] = eobject;
+              let eclass = eclassifier as EClass;
 
+              let eobject = closure.efactory.create(eclass);
 
-            closure.addEStructuralFeatures(eobject, doc);
+              (eobject as BasicEObjectImpl)._uuid = doc._id;
 
-
-            if(closure.resolveJobs[doc._id]!==undefined){
-
-              while(closure.resolveJobs[doc._id].length>0){
+              closure.eobjectRegistry[doc._id] = eobject;
 
 
-                let job = closure.resolveJobs[doc._id].pop();
+              closure.addEStructuralFeatures(eobject, doc);
 
-                if(job.eStructuralFeature.many){
 
-                  //remember: eGet call by reference
-                  let x = job.eObject.eGet(job.eStructuralFeature) as AbstractCollection<EObject>;
-                  x.add(eobject);
+              if (closure.resolveJobs[doc._id] !== undefined) {
+
+                while (closure.resolveJobs[doc._id].length > 0) {
+
+
+                  let job = closure.resolveJobs[doc._id].pop();
+
+                  if (job.eStructuralFeature.many) {
+
+                    //remember: eGet call by reference
+                    let x = job.eObject.eGet(job.eStructuralFeature) as AbstractCollection<EObject>;
+                    x.add(eobject);
+                  }
+                  else {
+                    job.eObject.eSet(job.eStructuralFeature, eobject);
+                  }
+
                 }
-                else{
-                  job.eObject.eSet(job.eStructuralFeature, eobject);
-                }
-
 
               }
+            }*/
 
-            }
           }
+
+          return user_db.allDocs({
+            include_docs: true,
+            attachments: true
+          });
+
 
         }
 
-        for(let uuid in closure.resolveJobs){
 
-          if(closure.resolveJobs[uuid].length>0){
-            console.log(uuid + 'not resolved: '+closure.resolveJobs[uuid].length);
+
+      })
+      .then(function (result) {
+
+        if(result!==undefined){
+          if(result.total_rows===0){
+
+            closure.user = ConferenceFactoryImpl.eINSTANCE.createPerson();
+
+            user_db.post(closure.jsonResource.asJson(closure.user));
+            local_db.post(closure.jsonResource.asJson(closure.user));
+          }
+          else{
+
+            return local_db.get(result.rows[0].id);
+
           }
         }
 
-      }).catch(function (err) {
+      })
+      .then(function(doc){
+
+        if(doc!==undefined){
+          closure.user = closure.jsonResource.getById(doc._id) as Person;
+          closure.user.eAdapters().push(new MyAdapter());
+        }
+
+      })
+      .catch(function (err) {
         console.log(err);
       });
+
 
     }).on('active', function () {
       // replicate resumed (e.g. new changes replicating, user went back online)
@@ -314,6 +409,7 @@ export class ProgramComponent implements OnInit {
     }).on('error', function (err) {
       // handle error
     });
+
 
   }
 
@@ -509,16 +605,7 @@ export class ProgramComponent implements OnInit {
     const db = new PouchDB('http://localhost:5984/eclipsecon/');
 
 
-    db.info().then(function (result) {
-      if(result.doc_count === 0){
 
-      }
-    }).catch(function (err) {
-      console.log(err);
-    });
-
-
-    let jsonResource:JsonResource = new JsonResource();
 
 
     let docs = new Array<any>();
@@ -532,26 +619,20 @@ export class ProgramComponent implements OnInit {
 
       if(next!=null){
 
-        let json = jsonResource.asJson(next.value);
+        let json = this.jsonResource.asJson(next.value);
 
         docs.push(json);
 
 
       }
 
-
-
     }
-
 
     db.bulkDocs(docs).then(function (result) {
       // handle result
     }).catch(function (err) {
       console.log(err);
     });
-
-
-
 
 
   }

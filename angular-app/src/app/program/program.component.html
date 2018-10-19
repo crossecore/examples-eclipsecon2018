@@ -20,7 +20,7 @@
 <mat-list>
   <mat-list-item *ngFor="let talk of filteredTalks">
     <h3 matLine> {{talk.title}} </h3>
-    <p matLine> <span *ngFor="let speaker of talk.speakers">{{speaker.firstName}} {{speaker.lastName}} ({{speaker.worksFor}}) </span></p>
+    <p matLine> <span *ngFor="let speaker of talk.speakers">{{speaker.firstName}} {{speaker.lastName}} ({{speaker.worksFor.name}}) </span></p>
     <p matLine> {{talk.timeBegin | date:'HH:mm'}} - {{talk.timeEnd | date:'HH:mm'}} </p>
     <p matLine> {{talk.track.name}} </p>
     <button (click)="toggleAttending(talk)" mat-raised-button>
