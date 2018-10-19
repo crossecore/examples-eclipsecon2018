@@ -13,7 +13,7 @@ extends NamedElement
 	
 	venue:Venue;
 	talks: OrderedSet<Talk>;
-	attendees:Person;
+	attendees: OrderedSet<Person>;
 	tracks: OrderedSet<Track>;
 	organizations: OrderedSet<Organization>;
 	

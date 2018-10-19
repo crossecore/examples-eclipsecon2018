@@ -121,11 +121,11 @@ import {DiagnosticChain} from "ecore/DiagnosticChain";
 				
 				//public eInverseRemoveFromTalk = this.eInverseRemove;
 			
-				public basicSetTrack(newobj:Track, msgs:NotificationChain):NotificationChain {
-					let oldobj = this._track;
-					this._track = newobj;
+				public basicSetRoom(newobj:Room, msgs:NotificationChain):NotificationChain {
+					let oldobj = this._room;
+					this._room = newobj;
 					if (this.eNotificationRequired()) {
-						let notification = new ENotificationImpl(this, NotificationImpl.SET, ConferencePackageLiterals.TALK_TRACK, oldobj, newobj);
+						let notification = new ENotificationImpl(this, NotificationImpl.SET, ConferencePackageLiterals.TALK_ROOM, oldobj, newobj);
 						if (msgs == null){
 							msgs = notification;
 						}
@@ -135,11 +135,11 @@ import {DiagnosticChain} from "ecore/DiagnosticChain";
 					}
 					return msgs;
 				}
-				public basicSetRoom(newobj:Room, msgs:NotificationChain):NotificationChain {
-					let oldobj = this._room;
-					this._room = newobj;
+				public basicSetTrack(newobj:Track, msgs:NotificationChain):NotificationChain {
+					let oldobj = this._track;
+					this._track = newobj;
 					if (this.eNotificationRequired()) {
-						let notification = new ENotificationImpl(this, NotificationImpl.SET, ConferencePackageLiterals.TALK_ROOM, oldobj, newobj);
+						let notification = new ENotificationImpl(this, NotificationImpl.SET, ConferencePackageLiterals.TALK_TRACK, oldobj, newobj);
 						if (msgs == null){
 							msgs = notification;
 						}

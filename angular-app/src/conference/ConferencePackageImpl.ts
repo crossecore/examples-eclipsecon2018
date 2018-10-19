@@ -6,8 +6,8 @@ import {EOperation} from "ecore/EOperation";
 import {EFactory} from "ecore/EFactory";
 import {EPackageImpl} from "ecore/EPackageImpl";
 import {EClass} from "ecore/EClass";
-import {EcorePackageImpl} from 'ecore/EcorePackageImpl';
-import {EcoreFactoryImpl} from 'ecore/EcoreFactoryImpl';
+import {EcorePackageImpl} from '../ecore/EcorePackageImpl';
+import {EcoreFactoryImpl} from '../ecore/EcoreFactoryImpl';
 export class ConferencePackageImpl extends EPackageImpl implements ConferencePackage{
 		public static eNAME:string = "conference";
 		
@@ -463,7 +463,7 @@ export class ConferencePackageImpl extends EPackageImpl implements ConferencePac
 				"attendees", 
 				null, 
 				0, 
-				1, 
+				-1, 
 				/*Conference*/ null, 
 				!EPackageImpl.IS_TRANSIENT, 
 				!EPackageImpl.IS_VOLATILE, 

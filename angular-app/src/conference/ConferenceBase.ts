@@ -62,29 +62,17 @@ import {Organization} from "conference/Organization";
 				}
 				
 				
-				private _attendees:Person = null;
-				get attendees():Person{
-				
+				private _attendees:OrderedSet<Person> = null;
+				get attendees():OrderedSet<Person>{
+					if(this._attendees===null){
+						this._attendees = new OrderedSet<Person>(this, ConferencePackageLiterals.CONFERENCE_ATTENDEES, BasicEObjectImpl.EOPPOSITE_FEATURE_BASE - ConferencePackageLiterals.CONFERENCE_ATTENDEES);
+							
+					}
 					return this._attendees;
+					
 				}
-				set attendees(value:Person) {
-					if (value != this._attendees) {
-						let msgs:NotificationChain = null;
-						if (this._attendees != null){
-							msgs = (this._attendees).eInverseRemove(this, BasicEObjectImpl.EOPPOSITE_FEATURE_BASE - ConferencePackageLiterals.CONFERENCE_ATTENDEES, /*null*/ null , msgs);
-						}
-						if (value != null){
-							msgs = value.eInverseAdd(this, BasicEObjectImpl.EOPPOSITE_FEATURE_BASE - ConferencePackageLiterals.CONFERENCE_ATTENDEES, /*null*/ null, msgs);
-						}
-						msgs = this.basicSetAttendees(value, msgs);
-						if (msgs != null) {
-							msgs.dispatch();
-						}
-					}
-					else if (this.eNotificationRequired()){
-						this.eNotify(new ENotificationImpl(this, NotificationImpl.SET,ConferencePackageLiterals.CONFERENCE_ATTENDEES , value, value));
-					}
-				}
+				
+				
 				private _tracks:OrderedSet<Track> = null;
 				get tracks():OrderedSet<Track>{
 					if(this._tracks===null){
@@ -137,20 +125,6 @@ import {Organization} from "conference/Organization";
 				
 				//public eInverseRemoveFromConference = this.eInverseRemove;
 			
-				public basicSetAttendees(newobj:Person, msgs:NotificationChain):NotificationChain {
-					let oldobj = this._attendees;
-					this._attendees = newobj;
-					if (this.eNotificationRequired()) {
-						let notification = new ENotificationImpl(this, NotificationImpl.SET, ConferencePackageLiterals.CONFERENCE_ATTENDEES, oldobj, newobj);
-						if (msgs == null){
-							msgs = notification;
-						}
-						else{
-							msgs.add(notification);
-						}
-					}
-					return msgs;
-				}
 				public basicSetVenue(newobj:Venue, msgs:NotificationChain):NotificationChain {
 					let oldobj = this._venue;
 					this._venue = newobj;
@@ -199,7 +173,8 @@ import {Organization} from "conference/Organization";
 							this.talks.concat((newValue as AbstractCollection<EObject>).map(i => i as Talk));
 							return;
 						case ConferencePackageLiterals.CONFERENCE_ATTENDEES:
-							this.attendees = <Person> newValue;
+							this.attendees.clear();
+							this.attendees.concat((newValue as AbstractCollection<EObject>).map(i => i as Person));
 							return;
 						case ConferencePackageLiterals.CONFERENCE_TRACKS:
 							this.tracks.clear();

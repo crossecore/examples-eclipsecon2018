@@ -71,6 +71,8 @@ import {Organization} from "conference/Organization";
 				
 				public meetsPersonAt(other:Person): Talk {
 					return null;
+
+				  //return Talk.allInstances()->select(t:Talk | (t.speakers->includes(self) or t.attendees->includes(self)) and (t.speakers->includes(other) or t.attendees->includes(other)));
 				};
 			
 				/* do not override from BasicEObject!
