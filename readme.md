@@ -52,25 +52,27 @@ The propagation of changes from the third layer to the upper layers is done by  
 
 
 ```typescript
-import {Adapter} from 'ecore/Adapter';
-import {Notification} from 'ecore/Notification';
-import {NotificationImpl} from 'ecore/NotificationImpl';
 
 class MyAdapter implements Adapter{
 
   notifyChanged(notification:Notification){
 
-    console.log(notification);
+    let notifier = notification.getNotifier();
 
-    switch(notification.getEventType()){
-      case NotificationImpl.ADD: console.log("ADD");break;
-      case NotificationImpl.REMOVE: console.log("REMOVE");break;
-      case NotificationImpl.SET: console.log("SET");break;
+    if(notifier!==null){
+      let doc = new JsonResource().asJson(notifier);
+      new PouchDB('eclipsecon').put(doc)
+        .then(function (response) {
+        // handle response
+      }).catch(function (err) {
+        console.log(err);
+      });
     }
+
   }
 }
 
-this.conference.eAdapters().push(new MyAdapter());
+this.user.eAdapters().push(new MyAdapter());
 ```
 
 ## Reflection
