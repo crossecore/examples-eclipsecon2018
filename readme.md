@@ -33,7 +33,7 @@ The Tabris app uses the [SQLite adapter of PouchDB](https://pouchdb.com/adapters
 The model that is stored in-memory can be seen as a third, non-persistent layer.
 
 PouchDB comes with a [synchronization](https://pouchdb.com/api.html#sync) mechanism that keeps the remote and local database synchronized.
-The following code starts a continuous synchronization between the local database *eclipsecon* and the remote database *http://localhost:5984/eclipsecon/*;
+The following code starts a continuous synchronization between the local database *eclipsecon* and the remote database *http://localhost:5984/eclipsecon/*.
 
 ```typescript
 PouchDB.sync('eclipsecon', 'http://localhost:5984/eclipsecon/', {
@@ -88,7 +88,7 @@ The following code snipped illustrates how to use reflection within an Angular H
 ## Factories
 
 When you use the factory to create objects, the factory will take care of proper object registration that are necessary such that features like reflection and the OCL operations ``allInstances()`` will work properly.
-For example, you call ``ConferenceFactoryImpl.eINSTANCE.createTalk()`` to create a new ``Talk`` object (insteading using the ``new`` operator).
+For example, you call ``ConferenceFactoryImpl.eINSTANCE.createTalk()`` to create a new ``Talk`` object (instead using the ``new`` operator).
 The following code shows how to use the factory in TypeScript:
 
 ```typescript
@@ -119,7 +119,7 @@ console.log(talk.attendees.excludes(person)); //returns true
 ```
 
 
-## Object Constraint Langauge
+## Object Constraint Language (OCL)
 ### Validation
 
 The OCL invariant ``noConflict`` asserts that all ``Talks`` a ``Person`` *self* ``attends`` are not temporally overlapping.
@@ -174,8 +174,8 @@ TalkImpl.allInstances()
     (t.speakers.includes(this) ||
     t.attendees.includes(this))
     &&
-    (t.speakers.includes(this) ||
-    t.attendees.includes(this)
+    (t.speakers.includes(other) ||
+    t.attendees.includes(other)
   )
 );
 ```
