@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pivot:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pivot="http://www.eclipse.org/ocl/2015/Pivot"
+    xsi:schemaLocation="http://www.eclipse.org/ocl/2015/Pivot java://org.eclipse.ocl.pivot.PivotPackage" name="Conference.ecore.oclas" externalURI="platform:/resource/model/model/Conference.ecore.oclas">
+  <ownedImports name="ecore" importedNamespace="pivot:Package http://www.eclipse.org/emf/2002/Ecore.oclas#//@ownedPackages.0"/>
+  <ownedPackages xmi:id="P.conference" name="conference" URI="conference" nsPrefix="conference">
+    <ownedClasses xmi:id="T.conference.Room" name="Room" superClasses="#T.conference.NamedElement">
+      <ownedProperties xmi:id="p.conference.Room.Venue" name="Venue" isRequired="false" type="#T.conference.Venue" isImplicit="true" opposite="#p.conference.Venue.rooms"/>
+      <ownedProperties xmi:id="p.conference.Room.Talk" name="Talk" type="#//@ownedPackages.1/@ownedClasses.0" isImplicit="true" opposite="#p.conference.Talk.room"/>
+    </ownedClasses>
+    <ownedClasses xmi:id="T.conference.Person" name="Person" superClasses="http://www.eclipse.org/ocl/2015/Library.oclas#T.ocl.OclElement">
+      <ownedProperties xmi:id="p.conference.Person.affiliation" name="affiliation" isRequired="false" type="#T.conference.Organization"
+          opposite="#p.conference.Organization.Person"/>
+      <ownedProperties xmi:id="p.conference.Person.firstName" name="firstName" isRequired="false" type="pivot:PrimitiveType http://www.eclipse.org/ocl/2015/Library.oclas#String"/>
+      <ownedProperties xmi:id="p.conference.Person.lastName" name="lastName" isRequired="false" type="pivot:PrimitiveType http://www.eclipse.org/ocl/2015/Library.oclas#String"/>
+      <ownedProperties xmi:id="p.conference.Person.gives" name="gives" type="#//@ownedPackages.1/@ownedClasses.1" opposite="#p.conference.Talk.speakers"/>
+      <ownedProperties xmi:id="p.conference.Person.attends" name="attends" type="#//@ownedPackages.1/@ownedClasses.1" opposite="#p.conference.Talk.attendees"/>
+      <ownedProperties xmi:id="p.conference.Person.Conference" name="Conference" isRequired="false" type="#T.conference.Conference" isImplicit="true"
+          opposite="#p.conference.Conference.attendees"/>
+    </ownedClasses>
+    <ownedClasses xmi:id="T.conference.Organization" name="Organization" superClasses="#T.conference.NamedElement">
+      <ownedProperties xmi:id="p.conference.Organization.Person" name="Person" type="#//@ownedPackages.1/@ownedClasses.2" isImplicit="true"
+          opposite="#p.conference.Person.affiliation"/>
+      <ownedProperties xmi:id="p.conference.Organization.Conference" name="Conference" isRequired="false" type="#T.conference.Conference"
+          isImplicit="true" opposite="#p.conference.Conference.organizations"/>
+    </ownedClasses>
+    <ownedClasses xmi:id="T.conference.Track" name="Track" superClasses="#T.conference.NamedElement">
+      <ownedProperties xmi:id="p.conference.Track.Conference" name="Conference" isRequired="false" type="#T.conference.Conference" isImplicit="true"
+          opposite="#p.conference.Conference.tracks"/>
+      <ownedProperties xmi:id="p.conference.Track.Talk" name="Talk" type="#//@ownedPackages.1/@ownedClasses.0" isImplicit="true" opposite="#p.conference.Talk.track"/>
+    </ownedClasses>
+    <ownedClasses xmi:id="T.conference.Talk" name="Talk" superClasses="http://www.eclipse.org/ocl/2015/Library.oclas#T.ocl.OclElement">
+      <ownedInvariants xmi:id="ciconference.Talk.hasDuration" name="hasDuration">
+        <ownedSpecification xsi:type="pivot:ExpressionInOCL" body="self.timeBegin &lt;> self.timeEnd"/>
+      </ownedInvariants>
+      <ownedInvariants xmi:id="ciconference.Talk.beginBeforeEnd" name="beginBeforeEnd">
+        <ownedSpecification xsi:type="pivot:ExpressionInOCL" body="self.timeBegin &lt; self.timeEnd"/>
+      </ownedInvariants>
+      <ownedProperties xmi:id="p.conference.Talk.title" name="title" isRequired="false" type="pivot:PrimitiveType http://www.eclipse.org/ocl/2015/Library.oclas#String"/>
+      <ownedProperties xmi:id="p.conference.Talk.timeBegin" name="timeBegin" isRequired="false" type="pivot:DataType http://www.eclipse.org/emf/2002/Ecore.oclas#//@ownedPackages.0/@ownedClasses.29"/>
+      <ownedProperties xmi:id="p.conference.Talk.timeEnd" name="timeEnd" isRequired="false" type="pivot:DataType http://www.eclipse.org/emf/2002/Ecore.oclas#//@ownedPackages.0/@ownedClasses.29"/>
+      <ownedProperties xmi:id="p.conference.Talk.track" name="track" isRequired="false" type="#T.conference.Track" opposite="#p.conference.Track.Talk"/>
+      <ownedProperties xmi:id="p.conference.Talk.room" name="room" isRequired="false" type="#T.conference.Room" opposite="#p.conference.Room.Talk"/>
+      <ownedProperties xmi:id="p.conference.Talk.speakers" name="speakers" type="#//@ownedPackages.1/@ownedClasses.3" opposite="#p.conference.Person.gives"/>
+      <ownedProperties xmi:id="p.conference.Talk.attendees" name="attendees" type="#//@ownedPackages.1/@ownedClasses.3" opposite="#p.conference.Person.attends"/>
+      <ownedProperties xmi:id="p.conference.Talk.Conference" name="Conference" isRequired="false" type="#T.conference.Conference" isImplicit="true"
+          opposite="#p.conference.Conference.talks"/>
+    </ownedClasses>
+    <ownedClasses xmi:id="T.conference.Conference" name="Conference" superClasses="#T.conference.NamedElement">
+      <ownedInvariants xmi:id="ciconference.Conference.noConflict" name="noConflict">
+        <ownedSpecification xsi:type="pivot:ExpressionInOCL" body="self.talks->forAll(t1:Talk | self.talks->forAll(t2:Talk| (t1.timeBegin &lt; t2.timeBegin and t1.timeEnd &lt;= t2.timeBegin) or (t2.timeBegin &lt; t1.timeBegin and t2.timeEnd &lt;= t1.timeBegin)))"/>
+      </ownedInvariants>
+      <ownedProperties xmi:id="p.conference.Conference.venue" name="venue" isRequired="false" type="#T.conference.Venue" isComposite="true"
+          opposite="#p.conference.Venue.Conference"/>
+      <ownedProperties xmi:id="p.conference.Conference.talks" name="talks" type="#//@ownedPackages.1/@ownedClasses.1" isComposite="true"
+          opposite="#p.conference.Talk.Conference"/>
+      <ownedProperties xmi:id="p.conference.Conference.attendees" name="attendees" isRequired="false" type="#T.conference.Person" isComposite="true"
+          opposite="#p.conference.Person.Conference"/>
+      <ownedProperties xmi:id="p.conference.Conference.tracks" name="tracks" type="#//@ownedPackages.1/@ownedClasses.4" isComposite="true"
+          opposite="#p.conference.Track.Conference"/>
+      <ownedProperties xmi:id="p.conference.Conference.organizations" name="organizations" type="#//@ownedPackages.1/@ownedClasses.5"
+          isComposite="true" opposite="#p.conference.Organization.Conference"/>
+    </ownedClasses>
+    <ownedClasses xmi:id="T.conference.Venue" name="Venue" superClasses="#T.conference.NamedElement">
+      <ownedProperties xmi:id="p.conference.Venue.rooms" name="rooms" type="#//@ownedPackages.1/@ownedClasses.6" isComposite="true" opposite="#p.conference.Room.Venue"/>
+      <ownedProperties xmi:id="p.conference.Venue.Conference" name="Conference" isRequired="false" type="#T.conference.Conference" isImplicit="true"
+          opposite="#p.conference.Conference.venue"/>
+    </ownedClasses>
+    <ownedClasses xmi:id="T.conference.NamedElement" name="NamedElement" isAbstract="true" isInterface="true" superClasses="http://www.eclipse.org/ocl/2015/Library.oclas#T.ocl.OclElement">
+      <ownedProperties xmi:id="p.conference.NamedElement.name" name="name" isRequired="false" type="pivot:PrimitiveType http://www.eclipse.org/ocl/2015/Library.oclas#String"/>
+    </ownedClasses>
+  </ownedPackages>
+  <ownedPackages xmi:id="P.$$" name="$$" URI="http://www.eclipse.org/ocl/2015/Orphanage" nsPrefix="orphanage">
+    <ownedClasses xsi:type="pivot:BagType" name="Bag" superClasses="#//@ownedPackages.1/@ownedClasses.7" elementType="#T.conference.Talk">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Talk" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..BagT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:OrderedSetType" name="OrderedSet" superClasses="#//@ownedPackages.1/@ownedClasses.8 #//@ownedPackages.1/@ownedClasses.9"
+        elementType="#T.conference.Talk" isNullFree="true">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Talk" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..OrderedSetT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:BagType" name="Bag" superClasses="#//@ownedPackages.1/@ownedClasses.10" elementType="#T.conference.Person">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Person" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..BagT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:OrderedSetType" name="OrderedSet" superClasses="#//@ownedPackages.1/@ownedClasses.11 #//@ownedPackages.1/@ownedClasses.12"
+        elementType="#T.conference.Person" isNullFree="true">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Person" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..OrderedSetT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:OrderedSetType" name="OrderedSet" superClasses="#//@ownedPackages.1/@ownedClasses.13 #//@ownedPackages.1/@ownedClasses.14"
+        elementType="#T.conference.Track" isNullFree="true">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Track" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..OrderedSetT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:OrderedSetType" name="OrderedSet" superClasses="#//@ownedPackages.1/@ownedClasses.15 #//@ownedPackages.1/@ownedClasses.16"
+        elementType="#T.conference.Organization" isNullFree="true">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Organization" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..OrderedSetT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:OrderedSetType" name="OrderedSet" superClasses="#//@ownedPackages.1/@ownedClasses.17 #//@ownedPackages.1/@ownedClasses.18"
+        elementType="#T.conference.Room" isNullFree="true">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Room" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..OrderedSetT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="Collection" superClasses="http://www.eclipse.org/ocl/2015/Library.oclas#T.ocl.OclAny"
+        elementType="#T.conference.Talk">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Talk" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..CollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="OrderedCollection" superClasses="#//@ownedPackages.1/@ownedClasses.7" elementType="#T.conference.Talk">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Talk" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..OrderedCollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="UniqueCollection" superClasses="#//@ownedPackages.1/@ownedClasses.7" elementType="#T.conference.Talk">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Talk" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..UniqueCollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="Collection" superClasses="http://www.eclipse.org/ocl/2015/Library.oclas#T.ocl.OclAny"
+        elementType="#T.conference.Person">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Person" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..CollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="OrderedCollection" superClasses="#//@ownedPackages.1/@ownedClasses.10" elementType="#T.conference.Person">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Person" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..OrderedCollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="UniqueCollection" superClasses="#//@ownedPackages.1/@ownedClasses.10" elementType="#T.conference.Person">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Person" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..UniqueCollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="OrderedCollection" superClasses="#//@ownedPackages.1/@ownedClasses.19" elementType="#T.conference.Track">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Track" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..OrderedCollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="UniqueCollection" superClasses="#//@ownedPackages.1/@ownedClasses.19" elementType="#T.conference.Track">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Track" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..UniqueCollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="OrderedCollection" superClasses="#//@ownedPackages.1/@ownedClasses.20" elementType="#T.conference.Organization">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Organization" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..OrderedCollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="UniqueCollection" superClasses="#//@ownedPackages.1/@ownedClasses.20" elementType="#T.conference.Organization">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Organization" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..UniqueCollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="OrderedCollection" superClasses="#//@ownedPackages.1/@ownedClasses.21" elementType="#T.conference.Room">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Room" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..OrderedCollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="UniqueCollection" superClasses="#//@ownedPackages.1/@ownedClasses.21" elementType="#T.conference.Room">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Room" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..UniqueCollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="Collection" superClasses="http://www.eclipse.org/ocl/2015/Library.oclas#T.ocl.OclAny"
+        elementType="#T.conference.Track">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Track" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..CollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="Collection" superClasses="http://www.eclipse.org/ocl/2015/Library.oclas#T.ocl.OclAny"
+        elementType="#T.conference.Organization">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Organization" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..CollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="Collection" superClasses="http://www.eclipse.org/ocl/2015/Library.oclas#T.ocl.OclAny"
+        elementType="#T.conference.Room">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.conference.Room" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..CollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+  </ownedPackages>
+</pivot:Model>
