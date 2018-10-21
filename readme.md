@@ -6,6 +6,8 @@ It also shows how Ecore models can be stored in the document-based NoSQL databas
 
 # The model
 
+![Conference Model Diagram](https://raw.githubusercontent.com/crossecore/examples-eclipsecon2018/master/model/model/diagram.png "Conference Model Diagram")
+
 A ``Conference`` consists of multiple ``Talks``.
 A ``Talk`` is associated with a ``Track``.
 A ``Talk`` has ``speakers`` which are ``Persons`` and the other way round a ``Person`` can give a ``Talk``.
