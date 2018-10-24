@@ -32,7 +32,8 @@ import {
   MatStepperModule,
   MatTableModule,
   MatTabsModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatSlideToggleModule
 } from '@angular/material';
 
 @NgModule({
@@ -66,7 +67,8 @@ import {
     MatStepperModule,
     MatTableModule,
     MatTabsModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatSlideToggleModule
   ],
   exports: [
     BrowserAnimationsModule,
@@ -98,7 +100,8 @@ import {
     MatStepperModule,
     MatTableModule,
     MatTabsModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatSlideToggleModule
   ]
 })
 export class MaterialImporterModule {
