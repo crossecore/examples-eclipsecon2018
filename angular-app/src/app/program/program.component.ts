@@ -27,6 +27,7 @@ import {BasicEObjectImpl} from 'ecore/BasicEObjectImpl';
 import {AbstractCollection} from 'ecore/AbstractCollection';
 import {ConferenceImpl} from 'conference/ConferenceImpl';
 import {Organization} from '../../conference/Organization';
+import {ENotificationImpl} from '../../ecore/ENotificationImpl';
 
 
 
@@ -51,13 +52,18 @@ class MyAdapter implements Adapter{
   notifyChanged(notification:Notification){
 
 
-    let notifier = notification.getNotifier();
+    let notifier = notification.getNotifier() as EObject;
 
     if(notifier!==null){
+
+      var enotification = notification as ENotificationImpl;
+      let feature = enotification.getFeature();
+      let eventType = enotification.getEventType();
+      let newValue = enotification.getNewValue();
+
       let newDoc = new JsonResource(ConferencePackageImpl.eINSTANCE, ConferenceFactoryImpl.eINSTANCE).asJson(notifier);
 
       const local_db = new PouchDB('eclipsecon');
-
 
       local_db.get((notifier as BasicEObjectImpl)._uuid)
         .then(function(currentDoc){
@@ -107,7 +113,7 @@ export class ProgramComponent implements OnInit {
     }
     else{
       this.filteredTrack = track;
-      this.filteredTalks = this.conference.talks.select(t=> t.track.name === track.name);
+      this.filteredTalks = this.filteredTrack.talks;//this.conference.talks.select(t=> t.track.name === track.name);
 
     }
 
@@ -284,7 +290,7 @@ export class ProgramComponent implements OnInit {
     const user_db = new PouchDB('user');
 
 
-    PouchDB.sync('eclipsecon', 'http://localhost:5984/eclipsecon/', {
+    PouchDB.sync('eclipsecon', 'http://ec2-3-120-115-100.eu-central-1.compute.amazonaws.com:5984/eclipsecon', {
       live: true,
       retry: true
     }).on('change', function (info) {
