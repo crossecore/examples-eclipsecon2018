@@ -100,7 +100,6 @@ export class ProgramComponent implements OnInit {
 
   toggleTrack(track: Track, event) {
 
-
     if(this.filteredTrack === track){
       this.filteredTrack = null;
       this.filteredTalks = this.conference.talks;
@@ -294,20 +293,18 @@ export class ProgramComponent implements OnInit {
     }).on('paused', function (err) {
 
       //TODO do full loading just once:
+      if(!closure.initialized) {
+        closure.initialized = true;
+        local_db.allDocs({
+          include_docs: true,
+          attachments: true
+        }).then(function (result) {
 
-      local_db.allDocs({
-        include_docs: true,
-        attachments: true
-      }).then(function (result) {
-
-        if(!closure.initialized){
-
-          closure.initialized = true;
           for (let row of result.rows) {
 
             let eobject = closure.jsonResource.fromJson(row.doc);
 
-            if(eobject instanceof ConferenceImpl){
+            if (eobject instanceof ConferenceImpl) {
               closure.conference = eobject as Conference;
               closure.filteredTalks = closure.conference.talks;
             }
@@ -318,39 +315,38 @@ export class ProgramComponent implements OnInit {
             attachments: true
           });
 
-        }
 
+        })
+          .then(function (result) {
 
-      })
-      .then(function (result) {
+            if (result !== undefined) {
+              if (result.total_rows === 0) {
 
-        if(result!==undefined){
-          if(result.total_rows===0){
+                closure.user = ConferenceFactoryImpl.eINSTANCE.createPerson();
 
-            closure.user = ConferenceFactoryImpl.eINSTANCE.createPerson();
+                user_db.post(closure.jsonResource.asJson(closure.user));
+                local_db.post(closure.jsonResource.asJson(closure.user));
+              }
+              else {
 
-            user_db.post(closure.jsonResource.asJson(closure.user));
-            local_db.post(closure.jsonResource.asJson(closure.user));
-          }
-          else{
+                return local_db.get(result.rows[0].id);
 
-            return local_db.get(result.rows[0].id);
+              }
+            }
 
-          }
-        }
+          })
+          .then(function (doc) {
 
-      })
-      .then(function(doc){
+            if (doc !== undefined) {
+              closure.user = closure.jsonResource.getById(doc._id) as Person;
+              closure.user.eAdapters().push(new MyAdapter());
+            }
 
-        if(doc!==undefined){
-          closure.user = closure.jsonResource.getById(doc._id) as Person;
-          closure.user.eAdapters().push(new MyAdapter());
-        }
-
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+      }
 
 
     }).on('active', function () {
@@ -362,6 +358,7 @@ export class ProgramComponent implements OnInit {
     }).on('error', function (err) {
       // handle error
     });
+
 
   }
 
