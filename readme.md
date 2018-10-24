@@ -1,4 +1,4 @@
-# App Architecture
+# CrossEcore Showcase
 
 This showcase presents how CrossEcore TypeScript can be used in a browser based [Angular](https://angular.io/) app with the [Angular Material](https://v5.material.angular.io/) user interface or as a hybrid app with a [Tabris](https://tabris.com/) user interface.
 It also shows how Ecore models can be stored in the document-based NoSQL database [PouchDB](https://pouchdb.com/). PouchDB synchronizes with a remote [Apache CouchDB](http://couchdb.apache.org/) and stores the data locally on the end-user devices with the aid of the WebSQL adapter in the web browser and with the SQLite adapter in the hybrid app.
@@ -52,9 +52,20 @@ The propagation of changes from the third layer to the upper layers is done by  
 
 ## Notifications
 
+Notifications allow you to react on model changes.
+You just need to implement the ``Adapter`` interface and its ``notifyChanged`` method.
+Adapters are like listeners that listens to events fired by a notifier if the notifier changed.
+The ``notifyChanged`` method has an argument ``notification``.
+The notification is an ``ENotificationImpl`` object from which you can access the notifier (``getNotifier()``), the event type (``getEventType()``), the affected EStructuralFeature (``getFeature()``), the new value of the feature after the change (``getNewValue()``) and the old value before the change (``getOldValue()``).
+Objects that implement the Adapter interface needs to be added to the list of eAdapters of the notifier.
+
+In the concrete case, the adapter in following example listen to changes to the user object.
+This means the user object is the notifier.
+Every time the user adds or removes talks from the list of attending talks, the notifyChange method is fired.
+``JsonResource.asJson()`` serializes the user object as a JSON document and puts this document to the local PouchDB.
+The local changes are automatically propagated to the remote CouchDB as the synchronization that was described in the previous section is still running in the background.
 
 ```typescript
-
 class MyAdapter implements Adapter{
 
   notifyChanged(notification:Notification){
@@ -83,9 +94,20 @@ This example shows how to use the Ecore reflection API to realize a dynamic prop
 The following code snipped illustrates how to use reflection within an Angular HTML template.
 
 ```html
-<mat-form-field *ngFor="let attribute of user.eClass().eAllAttributes">
-  <input matInput [placeholder]="attribute.name">
+<div *ngFor="let attribute of user.eClass().eAllAttributes">
+<mat-form-field *ngIf="attribute.eType.name==='EString'">
+  <input matInput  [placeholder]="attribute.name" [value]="user.eGet(attribute)">
 </mat-form-field>
+<mat-form-field *ngIf="attribute.eType.name==='EInt'">
+  <input matInput [placeholder]="attribute.name" [value]="user.eGet(attribute)" type="number">
+</mat-form-field>
+<mat-form-field *ngIf="attribute.eType.name==='EDate'">
+  <input matInput [matDatepicker]="picker" [placeholder]="attribute.name" [value]="user.eGet(attribute)">
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+<mat-slide-toggle *ngIf="attribute.eType.name==='EBoolean'" [checked]="user.eGet(attribute)===true">{{attribute.name}}</mat-slide-toggle>
+</div>
 ```
 
 
@@ -239,12 +261,32 @@ ng serve --open
 
 ## Tabris App
 
-https://docs.tabris.com/latest/build.html
+The Tabris documentation has a detailed section about the [Tabris build process](https://docs.tabris.com/latest/build.html).
+
+You can install the Tabris command line tools via npm:
 
 ```bash
 npm install -g tabris-cli
 ```
 
+Take a look at the cordova configuration file ``cordova/config.xml``.
+In order to use the PouchDB SQLite adapter you need the cordova plugin ``cordova-plugin-sqlite-2``.
+
+```xml
+<plugin name="cordova-plugin-sqlite-2" spec="^1.0.5" />
+```
+
+To allow your app to make XHR calls to the remote CouchDB you need the plugin ``cordova-plugin-whitelist``.
+```xml
+<plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
+```
+In addition, you need to configure the network access:
+
+```xml
+<access origin="*" />
+```
+
+To build your app, enter the following command in the command line:
 ```bash
 tabris build android
 ```
