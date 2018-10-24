@@ -206,8 +206,15 @@ implements EClass
 	};
 	
 	public getEStructuralFeature_number(featureID:number): EStructuralFeature {
-		/*TODO implement function*/ 
-		return null;
+    for(let feature of this.eAllStructuralFeatures)
+    {
+      if (feature.getFeatureID() == featureID)
+      {
+        return feature;
+      }
+    }
+
+    return null;
 	};
 	public getEStructuralFeature_string(featureName:string): EStructuralFeature {
     for(let feature of this.eAllStructuralFeatures)
