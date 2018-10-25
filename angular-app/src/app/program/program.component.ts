@@ -113,7 +113,7 @@ export class ProgramComponent implements OnInit {
     }
     else{
       this.filteredTrack = track;
-      this.filteredTalks = this.filteredTrack.talks;//this.conference.talks.select(t=> t.track.name === track.name);
+      this.filteredTalks = this.filteredTrack.talks;
 
     }
 
@@ -290,7 +290,7 @@ export class ProgramComponent implements OnInit {
     const user_db = new PouchDB('user');
 
 
-    PouchDB.sync('eclipsecon', 'http://ec2-3-120-115-100.eu-central-1.compute.amazonaws.com:5984/eclipsecon', {
+    PouchDB.sync('eclipsecon', 'http://localhost:5984/eclipsecon', {
       live: true,
       retry: true
     }).on('change', function (info) {
