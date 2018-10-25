@@ -1,5 +1,13 @@
-import {EcorePackageImpl} from "ecore/EcorePackageImpl";
-
+import {EAttribute} from "../ecore/EAttribute";
+import {EReference} from "../ecore/EReference";
+import {ConferenceFactoryImpl} from "../conference/ConferenceFactoryImpl";
+import {ConferencePackage} from "../conference/ConferencePackage";
+import {EOperation} from "../ecore/EOperation";
+import {EFactory} from "../ecore/EFactory";
+import {EPackageImpl} from "../ecore/EPackageImpl";
+import {EClass} from "../ecore/EClass";
+import {EcorePackageImpl} from '../ecore/EcorePackageImpl';
+import {EcoreFactoryImpl} from '../ecore/EcoreFactoryImpl';
 export class ConferencePackageImpl extends EPackageImpl implements ConferencePackage{
 		public static eNAME:string = "conference";
 		
@@ -41,11 +49,16 @@ export class ConferencePackageImpl extends EPackageImpl implements ConferencePac
             this.isCreated = true;
 			this.RoomEClass = this.createEClass(ConferencePackageImpl.ROOM);
 			this.PersonEClass = this.createEClass(ConferencePackageImpl.PERSON);
-			this.createEReference(this.PersonEClass, ConferencePackageImpl.PERSON_AFFILIATION);
+			this.createEReference(this.PersonEClass, ConferencePackageImpl.PERSON_WORKSFOR);
 			this.createEAttribute(this.PersonEClass, ConferencePackageImpl.PERSON_FIRSTNAME);
 			this.createEAttribute(this.PersonEClass, ConferencePackageImpl.PERSON_LASTNAME);
+			this.createEReference(this.PersonEClass, ConferencePackageImpl.PERSON_GIVES);
+			this.createEReference(this.PersonEClass, ConferencePackageImpl.PERSON_ATTENDS);
+			this.createEOperation(this.PersonEClass, ConferencePackageImpl.PERSON___MEETSPERSONAT__OTHER);
 			this.OrganizationEClass = this.createEClass(ConferencePackageImpl.ORGANIZATION);
 			this.TrackEClass = this.createEClass(ConferencePackageImpl.TRACK);
+			this.createEReference(this.TrackEClass, ConferencePackageImpl.TRACK_TALKS);
+			this.createEReference(this.TrackEClass, ConferencePackageImpl.TRACK_CONFERENCE);
 			this.TalkEClass = this.createEClass(ConferencePackageImpl.TALK);
 			this.createEAttribute(this.TalkEClass, ConferencePackageImpl.TALK_TITLE);
 			this.createEAttribute(this.TalkEClass, ConferencePackageImpl.TALK_TIMEBEGIN);
@@ -146,10 +159,10 @@ export class ConferencePackageImpl extends EPackageImpl implements ConferencePac
 				EPackageImpl.IS_ORDERED);
 			
 			this.initEReference(
-				this.getPerson_Affiliation(),
+				this.getPerson_WorksFor(),
 				this.getOrganization(), 
 				null, 
-				"affiliation", 
+				"worksFor", 
 				null, 
 				0, 
 				1, 
@@ -163,7 +176,47 @@ export class ConferencePackageImpl extends EPackageImpl implements ConferencePac
 				EPackageImpl.IS_UNIQUE, 
 				!EPackageImpl.IS_DERIVED, 
 				EPackageImpl.IS_ORDERED);
+			this.initEReference(
+				this.getPerson_Gives(),
+				this.getTalk(), 
+				this.getTalk_Speakers(), 
+				"gives", 
+				null, 
+				0, 
+				-1, 
+				/*Person*/ null, 
+				!EPackageImpl.IS_TRANSIENT, 
+				!EPackageImpl.IS_VOLATILE, 
+				EPackageImpl.IS_CHANGEABLE, 
+				!EPackageImpl.IS_COMPOSITE, 
+				EPackageImpl.IS_RESOLVE_PROXIES, 
+				!EPackageImpl.IS_UNSETTABLE, 
+				EPackageImpl.IS_UNIQUE, 
+				!EPackageImpl.IS_DERIVED, 
+				EPackageImpl.IS_ORDERED);
+			this.initEReference(
+				this.getPerson_Attends(),
+				this.getTalk(), 
+				this.getTalk_Attendees(), 
+				"attends", 
+				null, 
+				0, 
+				-1, 
+				/*Person*/ null, 
+				!EPackageImpl.IS_TRANSIENT, 
+				!EPackageImpl.IS_VOLATILE, 
+				EPackageImpl.IS_CHANGEABLE, 
+				!EPackageImpl.IS_COMPOSITE, 
+				EPackageImpl.IS_RESOLVE_PROXIES, 
+				!EPackageImpl.IS_UNSETTABLE, 
+				EPackageImpl.IS_UNIQUE, 
+				!EPackageImpl.IS_DERIVED, 
+				EPackageImpl.IS_ORDERED);
 			
+			//TODO add initEOperation to EPackageImpl
+			op = this.initEOperation_3(this.getPerson__MeetsPersonAt__Other(), null, "meetsPersonAt", 0, -1, EPackageImpl.IS_UNIQUE, !EPackageImpl.IS_ORDERED);
+			//TODO add addEParameter to EPackageImpl
+			//this.addEParameter_3(op, this.getPerson(), "other", 0, 1, EPackageImpl.IS_UNIQUE, !EPackageImpl.IS_ORDERED);
 			
 			
 			this.initEClass(
@@ -187,6 +240,42 @@ export class ConferencePackageImpl extends EPackageImpl implements ConferencePac
 			EPackageImpl.IS_GENERATED_INSTANCE_CLASS);						
 			
 			
+			this.initEReference(
+				this.getTrack_Talks(),
+				this.getTalk(), 
+				null, 
+				"talks", 
+				null, 
+				0, 
+				-1, 
+				/*Track*/ null, 
+				!EPackageImpl.IS_TRANSIENT, 
+				!EPackageImpl.IS_VOLATILE, 
+				EPackageImpl.IS_CHANGEABLE, 
+				!EPackageImpl.IS_COMPOSITE, 
+				EPackageImpl.IS_RESOLVE_PROXIES, 
+				!EPackageImpl.IS_UNSETTABLE, 
+				EPackageImpl.IS_UNIQUE, 
+				EPackageImpl.IS_DERIVED, 
+				EPackageImpl.IS_ORDERED);
+			this.initEReference(
+				this.getTrack_Conference(),
+				this.getConference(), 
+				this.getConference_Tracks(), 
+				"conference", 
+				null, 
+				0, 
+				1, 
+				/*Track*/ null, 
+				!EPackageImpl.IS_TRANSIENT, 
+				!EPackageImpl.IS_VOLATILE, 
+				EPackageImpl.IS_CHANGEABLE, 
+				!EPackageImpl.IS_COMPOSITE, 
+				EPackageImpl.IS_RESOLVE_PROXIES, 
+				!EPackageImpl.IS_UNSETTABLE, 
+				EPackageImpl.IS_UNIQUE, 
+				!EPackageImpl.IS_DERIVED, 
+				EPackageImpl.IS_ORDERED);
 			
 			
 			
@@ -286,7 +375,7 @@ export class ConferencePackageImpl extends EPackageImpl implements ConferencePac
 			this.initEReference(
 				this.getTalk_Speakers(),
 				this.getPerson(), 
-				null, 
+				this.getPerson_Gives(), 
 				"speakers", 
 				null, 
 				0, 
@@ -304,7 +393,7 @@ export class ConferencePackageImpl extends EPackageImpl implements ConferencePac
 			this.initEReference(
 				this.getTalk_Attendees(),
 				this.getPerson(), 
-				null, 
+				this.getPerson_Attends(), 
 				"attendees", 
 				null, 
 				0, 
@@ -374,7 +463,7 @@ export class ConferencePackageImpl extends EPackageImpl implements ConferencePac
 				"attendees", 
 				null, 
 				0, 
-				1, 
+				-1, 
 				/*Conference*/ null, 
 				!EPackageImpl.IS_TRANSIENT, 
 				!EPackageImpl.IS_VOLATILE, 
@@ -388,7 +477,7 @@ export class ConferencePackageImpl extends EPackageImpl implements ConferencePac
 			this.initEReference(
 				this.getConference_Tracks(),
 				this.getTrack(), 
-				null, 
+				this.getTrack_Conference(), 
 				"tracks", 
 				null, 
 				0, 
@@ -511,12 +600,15 @@ export class ConferencePackageImpl extends EPackageImpl implements ConferencePac
 		public static ROOM_NAME:number = 0;
 		
 		public static PERSON:number = 1;
-		public static PERSON_FEATURE_COUNT:number = 3;
-		public static PERSON_OPERATION_COUNT:number = 0;
+		public static PERSON_FEATURE_COUNT:number = 5;
+		public static PERSON_OPERATION_COUNT:number = 1;
 		
-		public static PERSON_AFFILIATION:number = 0;
+		public static PERSON_WORKSFOR:number = 0;
 		public static PERSON_FIRSTNAME:number = 1;
 		public static PERSON_LASTNAME:number = 2;
+		public static PERSON_GIVES:number = 3;
+		public static PERSON_ATTENDS:number = 4;
+		public static PERSON___MEETSPERSONAT__OTHER:number = 0; 
 		
 		public static ORGANIZATION:number = 2;
 		public static ORGANIZATION_FEATURE_COUNT:number = ConferencePackageImpl.NAMEDELEMENT_FEATURE_COUNT + 0;
@@ -525,10 +617,12 @@ export class ConferencePackageImpl extends EPackageImpl implements ConferencePac
 		public static ORGANIZATION_NAME:number = 0;
 		
 		public static TRACK:number = 3;
-		public static TRACK_FEATURE_COUNT:number = ConferencePackageImpl.NAMEDELEMENT_FEATURE_COUNT + 0;
+		public static TRACK_FEATURE_COUNT:number = ConferencePackageImpl.NAMEDELEMENT_FEATURE_COUNT + 2;
 		public static TRACK_OPERATION_COUNT:number = ConferencePackageImpl.NAMEDELEMENT_OPERATION_COUNT + 0;
 		
 		public static TRACK_NAME:number = 0;
+		public static TRACK_TALKS:number = 1;
+		public static TRACK_CONFERENCE:number = 2;
 		
 		public static TALK:number = 4;
 		public static TALK_FEATURE_COUNT:number = 7;
@@ -572,13 +666,18 @@ export class ConferencePackageImpl extends EPackageImpl implements ConferencePac
 		
 		public getPerson=():EClass=>{return this.PersonEClass;}
 		
-		public getPerson_Affiliation=():EReference=>{return <EReference> this.PersonEClass.eStructuralFeatures.at(0);}
+		public getPerson_WorksFor=():EReference=>{return <EReference> this.PersonEClass.eStructuralFeatures.at(0);}
 		public getPerson_FirstName=():EAttribute=>{return <EAttribute> this.PersonEClass.eStructuralFeatures.at(1);}
 		public getPerson_LastName=():EAttribute=>{return <EAttribute> this.PersonEClass.eStructuralFeatures.at(2);}
+		public getPerson_Gives=():EReference=>{return <EReference> this.PersonEClass.eStructuralFeatures.at(3);}
+		public getPerson_Attends=():EReference=>{return <EReference> this.PersonEClass.eStructuralFeatures.at(4);}
+		public getPerson__MeetsPersonAt__Other=():EOperation=>{return <EOperation> this.PersonEClass.eOperations.at(0);}
 		public getOrganization=():EClass=>{return this.OrganizationEClass;}
 		
 		public getTrack=():EClass=>{return this.TrackEClass;}
 		
+		public getTrack_Talks=():EReference=>{return <EReference> this.TrackEClass.eStructuralFeatures.at(0);}
+		public getTrack_Conference=():EReference=>{return <EReference> this.TrackEClass.eStructuralFeatures.at(1);}
 		public getTalk=():EClass=>{return this.TalkEClass;}
 		
 		public getTalk_Title=():EAttribute=>{return <EAttribute> this.TalkEClass.eStructuralFeatures.at(0);}
@@ -618,9 +717,13 @@ export class ConferencePackageImpl extends EPackageImpl implements ConferencePac
 			NAMEDELEMENT: ConferencePackageImpl.eINSTANCE.getNamedElement(), 
 			
 			NAMEDELEMENT_NAME: ConferencePackageImpl.eINSTANCE.getNamedElement_Name(), 
-			PERSON_AFFILIATION: ConferencePackageImpl.eINSTANCE.getPerson_Affiliation(), 
+			PERSON_WORKSFOR: ConferencePackageImpl.eINSTANCE.getPerson_WorksFor(), 
 			PERSON_FIRSTNAME: ConferencePackageImpl.eINSTANCE.getPerson_FirstName(), 
 			PERSON_LASTNAME: ConferencePackageImpl.eINSTANCE.getPerson_LastName(), 
+			PERSON_GIVES: ConferencePackageImpl.eINSTANCE.getPerson_Gives(), 
+			PERSON_ATTENDS: ConferencePackageImpl.eINSTANCE.getPerson_Attends(), 
+			TRACK_TALKS: ConferencePackageImpl.eINSTANCE.getTrack_Talks(), 
+			TRACK_CONFERENCE: ConferencePackageImpl.eINSTANCE.getTrack_Conference(), 
 			TALK_TITLE: ConferencePackageImpl.eINSTANCE.getTalk_Title(), 
 			TALK_TIMEBEGIN: ConferencePackageImpl.eINSTANCE.getTalk_TimeBegin(), 
 			TALK_TIMEEND: ConferencePackageImpl.eINSTANCE.getTalk_TimeEnd(), 
@@ -640,12 +743,3 @@ export class ConferencePackageImpl extends EPackageImpl implements ConferencePac
 
  
 }
-import {EAttribute} from "ecore/EAttribute";
-import {EReference} from "ecore/EReference";
-import {ConferenceFactoryImpl} from "conference/ConferenceFactoryImpl";
-import {ConferencePackage} from "conference/ConferencePackage";
-import {EOperation} from "ecore/EOperation";
-import {EFactory} from "ecore/EFactory";
-import {EPackageImpl} from "ecore/EPackageImpl";
-import {EcoreFactoryImpl} from "ecore/EcoreFactoryImpl";
-import {EClass} from "ecore/EClass";

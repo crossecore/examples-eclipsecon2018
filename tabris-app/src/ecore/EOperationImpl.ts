@@ -5,7 +5,7 @@
  * contributor: Simon Schwichtenberg
  */
 
-import {EOperationBase} from "./EOperationBase";
+import {EOperationBase} from "../ecore/EOperationBase";
 
 ///<summary>This class was generated.</summary>
 

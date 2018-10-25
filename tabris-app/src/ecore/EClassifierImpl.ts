@@ -5,7 +5,7 @@
  * contributor: Simon Schwichtenberg
  */
 
-import {EClassifierBase} from "./EClassifierBase";
+import {EClassifierBase} from "../ecore/EClassifierBase";
 
 ///<summary>This class was generated.</summary>
 
@@ -57,6 +57,22 @@ import {EClassifierBase} from "./EClassifierBase";
 			 }
 			 */
 		}
+
+
+		public getClassifierID(){
+      if (this.metaObjectID == -1)
+      {
+        this.metaObjectID = this.computeClassifierID();
+      }
+      return this.metaObjectID;
+    }
+
+    private computeClassifierID():number
+    {
+      return this.ePackage != null ?
+        this.ePackage.eClassifiers.indexOf(this) :
+        -1;
+    }
 	}
 	
 

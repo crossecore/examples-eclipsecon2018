@@ -4,7 +4,7 @@
  *
  * contributor: Simon Schwichtenberg
  */
-import {AbstractCollection} from "./AbstractCollection";
+import {AbstractCollection} from "../ecore/AbstractCollection";
 export class Sequence<T> extends AbstractCollection<T>{
 
 

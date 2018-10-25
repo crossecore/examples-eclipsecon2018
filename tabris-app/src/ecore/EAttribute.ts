@@ -6,9 +6,9 @@
  */
 
 ///<summary>This class was generated.</summary>
-import {OrderedSet} from "./OrderedSet";
-import {EDataType} from "./EDataType";
-import {EStructuralFeature} from "./EStructuralFeature";
+import {OrderedSet} from "../ecore/OrderedSet";
+import {EDataType} from "../ecore/EDataType";
+import {EStructuralFeature} from "../ecore/EStructuralFeature";
 export interface EAttribute
 extends EStructuralFeature
 

@@ -5,7 +5,7 @@
  * contributor: Simon Schwichtenberg
  */
 
-import {EReferenceBase} from "./EReferenceBase";
+import {EReferenceBase} from "../ecore/EReferenceBase";
 
 ///<summary>This class was generated.</summary>
 
@@ -13,6 +13,10 @@ import {EReferenceBase} from "./EReferenceBase";
 	extends EReferenceBase
 	
 	{
+
+    public getFeatureID(): number {
+      return this.featureID;
+    };
 
 	}
 	

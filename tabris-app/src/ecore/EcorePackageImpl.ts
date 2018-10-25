@@ -4,17 +4,15 @@
  *
  * contributor: Simon Schwichtenberg
  */
-
-import {EFactory} from "./EFactory";
-import {EcorePackage} from "./EcorePackage";
-import {EAttribute} from "./EAttribute";
-import {EOperation} from "./EOperation";
-import {EPackageImpl} from "./EPackageImpl";
-import {EcoreFactoryImpl} from "./EcoreFactoryImpl";
-import {EDataType} from "./EDataType";
-import {EReference} from "./EReference";
-import {EClass} from "./EClass";
-
+import {EFactory} from "../ecore/EFactory";
+import {EcorePackage} from "../ecore/EcorePackage";
+import {EAttribute} from "../ecore/EAttribute";
+import {EOperation} from "../ecore/EOperation";
+import {EPackageImpl} from "../ecore/EPackageImpl";
+import {EcoreFactoryImpl} from "../ecore/EcoreFactoryImpl";
+import {EDataType} from "../ecore/EDataType";
+import {EReference} from "../ecore/EReference";
+import {EClass} from "../ecore/EClass";
 export class EcorePackageImpl extends EPackageImpl implements EcorePackage{
 		public static eNAME:string = "ecore";
 		

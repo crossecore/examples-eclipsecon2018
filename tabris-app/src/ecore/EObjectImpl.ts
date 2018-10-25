@@ -5,7 +5,7 @@
  * contributor: Simon Schwichtenberg
  */
 
-import {EObjectBase} from "./EObjectBase";
+import {EObjectBase} from "../ecore/EObjectBase";
 
 ///<summary>This class was generated.</summary>
 

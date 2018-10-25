@@ -6,9 +6,9 @@
  */
 
 ///<summary>This class was generated.</summary>
-import {EOperation} from "./EOperation";
-import {OrderedSet} from "./OrderedSet";
-import {ETypedElement} from "./ETypedElement";
+import {EOperation} from "../ecore/EOperation";
+import {OrderedSet} from "../ecore/OrderedSet";
+import {ETypedElement} from "../ecore/ETypedElement";
 export interface EParameter
 extends ETypedElement
 

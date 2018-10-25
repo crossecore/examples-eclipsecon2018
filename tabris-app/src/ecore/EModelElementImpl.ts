@@ -5,7 +5,7 @@
  * contributor: Simon Schwichtenberg
  */
 
-import {EModelElementBase} from "./EModelElementBase";
+import {EModelElementBase} from "../ecore/EModelElementBase";
 
 ///<summary>This class was generated.</summary>
 

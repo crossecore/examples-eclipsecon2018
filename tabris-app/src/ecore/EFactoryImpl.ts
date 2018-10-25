@@ -5,7 +5,7 @@
  * contributor: Simon Schwichtenberg
  */
 
-import {EFactoryBase} from "./EFactoryBase";
+import {EFactoryBase} from "../ecore/EFactoryBase";
 
 ///<summary>This class was generated.</summary>
 

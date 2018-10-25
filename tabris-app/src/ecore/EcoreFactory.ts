@@ -5,26 +5,26 @@
  * contributor: Simon Schwichtenberg
  */
 
-import {EFactory} from "./EFactory";
-import {EModelElement} from "./EModelElement";
-import {EAttribute} from "./EAttribute";
-import {EAnnotation} from "./EAnnotation";
-import {EPackage} from "./EPackage";
-import {EDataType} from "./EDataType";
-import {ETypeParameter} from "./ETypeParameter";
-import {EEnum} from "./EEnum";
-import {EStringToStringMapEntry} from "./EStringToStringMapEntry";
-import {EReference} from "./EReference";
-import {EGenericType} from "./EGenericType";
-import {EClassifier} from "./EClassifier";
-import {EEnumLiteral} from "./EEnumLiteral";
-import {ETypedElement} from "./ETypedElement";
-import {EStructuralFeature} from "./EStructuralFeature";
-import {EParameter} from "./EParameter";
-import {EOperation} from "./EOperation";
-import {EObject} from "./EObject";
-import {ENamedElement} from "./ENamedElement";
-import {EClass} from "./EClass";
+import {EFactory} from "../ecore/EFactory";
+import {EModelElement} from "../ecore/EModelElement";
+import {EAttribute} from "../ecore/EAttribute";
+import {EAnnotation} from "../ecore/EAnnotation";
+import {EPackage} from "../ecore/EPackage";
+import {EDataType} from "../ecore/EDataType";
+import {ETypeParameter} from "../ecore/ETypeParameter";
+import {EEnum} from "../ecore/EEnum";
+import {EStringToStringMapEntry} from "../ecore/EStringToStringMapEntry";
+import {EReference} from "../ecore/EReference";
+import {EGenericType} from "../ecore/EGenericType";
+import {EClassifier} from "../ecore/EClassifier";
+import {EEnumLiteral} from "../ecore/EEnumLiteral";
+import {ETypedElement} from "../ecore/ETypedElement";
+import {EStructuralFeature} from "../ecore/EStructuralFeature";
+import {EParameter} from "../ecore/EParameter";
+import {EOperation} from "../ecore/EOperation";
+import {EObject} from "../ecore/EObject";
+import {ENamedElement} from "../ecore/ENamedElement";
+import {EClass} from "../ecore/EClass";
 export interface EcoreFactory extends EFactory{
 	createEAttribute():EAttribute;
 	createEAnnotation():EAnnotation;

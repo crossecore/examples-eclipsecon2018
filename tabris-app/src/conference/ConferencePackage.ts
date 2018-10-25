@@ -1,3 +1,7 @@
+import {EAttribute} from "../ecore/EAttribute";
+import {EReference} from "../ecore/EReference";
+import {EClass} from "../ecore/EClass";
+import {EPackage} from "../ecore/EPackage";
 export interface ConferencePackage extends EPackage {
 	getNamedElement():EClass;
 	
@@ -5,13 +9,17 @@ export interface ConferencePackage extends EPackage {
 	getRoom():EClass;
 	
 	getPerson():EClass;
-	getPerson_Affiliation():EReference;
+	getPerson_WorksFor():EReference;
+	getPerson_Gives():EReference;
+	getPerson_Attends():EReference;
 	
 	getPerson_FirstName():EAttribute;
 	getPerson_LastName():EAttribute;
 	getOrganization():EClass;
 	
 	getTrack():EClass;
+	getTrack_Talks():EReference;
+	getTrack_Conference():EReference;
 	
 	getTalk():EClass;
 	getTalk_Track():EReference;
@@ -33,7 +41,3 @@ export interface ConferencePackage extends EPackage {
 	getVenue_Rooms():EReference;
 	
 }
-import {EAttribute} from "ecore/EAttribute";
-import {EReference} from "ecore/EReference";
-import {EClass} from "ecore/EClass";
-import {EPackage} from "ecore/EPackage";

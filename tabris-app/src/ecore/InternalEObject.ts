@@ -6,10 +6,10 @@
  */
 
 
-import {EStructuralFeature} from "./EStructuralFeature";
-import {EObject} from "./EObject";
-import {EClass} from "./EClass";
-import {NotificationChain} from "./NotificationChain";
+import {EStructuralFeature} from "../ecore/EStructuralFeature";
+import {EObject} from "../ecore/EObject";
+import {EClass} from "../ecore/EClass";
+import {NotificationChain} from "../ecore/NotificationChain";
 export interface InternalEObject extends EObject
     {
 
@@ -34,7 +34,8 @@ export interface InternalEObject extends EObject
 
         eContainerFeatureID():number;
 
-        eDerivedStructuralFeatureID(baseFeatureID:number, baseClass:Function):number;
+        eDerivedStructuralFeatureID_number_Function(baseFeatureID:number, baseClass:Function):number;
+        eDerivedStructuralFeatureID_EStructuralFeature(feature:EStructuralFeature):number;
 
         eDerivedOperationID(baseOperationID:number, baseClass:Function):number;
 

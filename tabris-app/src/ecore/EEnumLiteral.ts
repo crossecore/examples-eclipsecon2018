@@ -6,10 +6,10 @@
  */
 
 ///<summary>This class was generated.</summary>
-import {OrderedSet} from "./OrderedSet";
-import {ENamedElement} from "./ENamedElement";
-import {EEnum} from "./EEnum";
-import {Enumerator} from "./Enumerator";
+import {OrderedSet} from "../ecore/OrderedSet";
+import {ENamedElement} from "../ecore/ENamedElement";
+import {EEnum} from "../ecore/EEnum";
+import {Enumerator} from "../ecore/Enumerator";
 export interface EEnumLiteral
 extends ENamedElement
 

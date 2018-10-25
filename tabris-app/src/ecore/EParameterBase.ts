@@ -4,20 +4,19 @@
  *
  * contributor: Simon Schwichtenberg
  */
-
+import {EAnnotation} from "../ecore/EAnnotation";
+import {ETypedElementImpl} from "../ecore/ETypedElementImpl";
+import {InternalEObject} from "../ecore/InternalEObject";
+import {EParameter} from "../ecore/EParameter";
+import {EOperation} from "../ecore/EOperation";
+import {ENotificationImpl} from "../ecore/ENotificationImpl";
+import {BasicEObjectImpl} from "../ecore/BasicEObjectImpl";
+import {OrderedSet} from "../ecore/OrderedSet";
+import {NotificationChain} from "../ecore/NotificationChain";
+import {EcorePackageLiterals} from "../ecore/EcorePackageLiterals";
+import {EClass} from "../ecore/EClass";
+import {NotificationImpl} from "../ecore/NotificationImpl";
 ///<summary>This class was generated.</summary>
-import {EAnnotation} from "./EAnnotation";
-import {ETypedElementImpl} from "./ETypedElementImpl";
-import {InternalEObject} from "./InternalEObject";
-import {EParameter} from "./EParameter";
-import {EOperation} from "./EOperation";
-import {ENotificationImpl} from "./ENotificationImpl";
-import {BasicEObjectImpl} from "./BasicEObjectImpl";
-import {OrderedSet} from "./OrderedSet";
-import {NotificationChain} from "./NotificationChain";
-import {EcorePackageLiterals} from "./EcorePackageLiterals";
-import {EClass} from "./EClass";
-import {NotificationImpl} from "./NotificationImpl";
 export class EParameterBase
 extends ETypedElementImpl
 implements EParameter

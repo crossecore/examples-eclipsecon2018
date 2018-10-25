@@ -6,8 +6,8 @@
  */
 
 ///<summary>This class was generated.</summary>
-import {EModelElement} from "./EModelElement";
-import {OrderedSet} from "./OrderedSet";
+import {EModelElement} from "../ecore/EModelElement";
+import {OrderedSet} from "../ecore/OrderedSet";
 export interface ENamedElement
 extends EModelElement
 

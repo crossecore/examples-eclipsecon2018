@@ -6,10 +6,10 @@
  */
 
 
-import {NotificationImpl} from "./NotificationImpl";
-import {InternalEObject} from "./InternalEObject";
-import {EStructuralFeature} from "./EStructuralFeature";
-import {EClass} from "./EClass";
+import {NotificationImpl} from "../ecore/NotificationImpl";
+import {InternalEObject} from "../ecore/InternalEObject";
+import {EStructuralFeature} from "../ecore/EStructuralFeature";
+import {EClass} from "../ecore/EClass";
 export class ENotificationImpl extends NotificationImpl
     {
 
@@ -39,6 +39,13 @@ export class ENotificationImpl extends NotificationImpl
                 this.feature = eClass.getEStructuralFeature(this.featureID);
             }
             return this.feature;
+        }
+
+
+        public getNotifier():any
+        {
+          return this.notifier;
+
         }
     }
 

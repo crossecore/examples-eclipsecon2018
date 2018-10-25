@@ -5,7 +5,7 @@
  * contributor: Simon Schwichtenberg
  */
 
-import {AbstractCollection} from "./AbstractCollection";
+import {AbstractCollection} from "../ecore/AbstractCollection";
 export class Bag<T> extends AbstractCollection<T>{
 
 

@@ -6,8 +6,8 @@
  */
 
 
-    import {Notification} from "./Notification";
-import {Adapter} from "./Adapter";
+    import {Notification} from "../ecore/Notification";
+import {Adapter} from "../ecore/Adapter";
 export interface Notifier
     {
 

@@ -5,9 +5,9 @@
  * contributor: Simon Schwichtenberg
  */
 ///<summary>This class was generated.</summary>
-import {OrderedSet} from "./OrderedSet";
-import {ETypedElement} from "./ETypedElement";
-import {EClass} from "./EClass";
+import {OrderedSet} from "../ecore/OrderedSet";
+import {ETypedElement} from "../ecore/ETypedElement";
+import {EClass} from "../ecore/EClass";
 export interface EStructuralFeature
 extends ETypedElement
 

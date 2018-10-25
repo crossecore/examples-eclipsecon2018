@@ -5,7 +5,7 @@
  * contributor: Simon Schwichtenberg
  */
 
-import {ENamedElementBase} from "./ENamedElementBase";
+import {ENamedElementBase} from "../ecore/ENamedElementBase";
 
 ///<summary>This class was generated.</summary>
 

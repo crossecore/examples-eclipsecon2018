@@ -5,7 +5,7 @@
  * contributor: Simon Schwichtenberg
  */
 
-import {EEnumBase} from "./EEnumBase";
+import {EEnumBase} from "../ecore/EEnumBase";
 
 ///<summary>This class was generated.</summary>
 

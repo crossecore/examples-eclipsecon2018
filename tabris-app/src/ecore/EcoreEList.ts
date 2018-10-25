@@ -4,8 +4,8 @@
  *
  * contributor: Simon Schwichtenberg
  */
-import {NotifyingList} from "./NotifyingList";
-import {EStructuralFeature} from "./EStructuralFeature";
+import {NotifyingList} from "../ecore/NotifyingList";
+import {EStructuralFeature} from "../ecore/EStructuralFeature";
 
 
 

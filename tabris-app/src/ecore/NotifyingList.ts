@@ -6,8 +6,8 @@
  */
 
 
-import {Notification} from "./Notification";
-import {NotificationChain} from "./NotificationChain";
+import {Notification} from "../ecore/Notification";
+import {NotificationChain} from "../ecore/NotificationChain";
 export interface NotifyingList<T>
     {
         isNotificationRequired():boolean;

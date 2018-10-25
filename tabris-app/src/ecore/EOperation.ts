@@ -6,14 +6,14 @@
  */
 
 ///<summary>This class was generated.</summary>
-import {EParameter} from "./EParameter";
-import {EOperation} from "./EOperation";
-import {OrderedSet} from "./OrderedSet";
-import {ETypeParameter} from "./ETypeParameter";
-import {EGenericType} from "./EGenericType";
-import {ETypedElement} from "./ETypedElement";
-import {EClassifier} from "./EClassifier";
-import {EClass} from "./EClass";
+import {EParameter} from "../ecore/EParameter";
+import {EOperation} from "../ecore/EOperation";
+import {OrderedSet} from "../ecore/OrderedSet";
+import {ETypeParameter} from "../ecore/ETypeParameter";
+import {EGenericType} from "../ecore/EGenericType";
+import {ETypedElement} from "../ecore/ETypedElement";
+import {EClassifier} from "../ecore/EClassifier";
+import {EClass} from "../ecore/EClass";
 export interface EOperation
 extends ETypedElement
 

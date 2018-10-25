@@ -4,20 +4,19 @@
  *
  * contributor: Simon Schwichtenberg
  */
-
-import {EAttribute} from "./EAttribute";
-import {EAnnotation} from "./EAnnotation";
-import {EDataType} from "./EDataType";
-import {InternalEObject} from "./InternalEObject";
-import {ENotificationImpl} from "./ENotificationImpl";
-import {BasicEObjectImpl} from "./BasicEObjectImpl";
-import {OrderedSet} from "./OrderedSet";
-import {NotificationChain} from "./NotificationChain";
-import {EcorePackageLiterals} from "./EcorePackageLiterals";
-import {EcorePackageImpl} from "./EcorePackageImpl";
-import {EStructuralFeatureImpl} from "./EStructuralFeatureImpl";
-import {EClass} from "./EClass";
-import {NotificationImpl} from "./NotificationImpl";
+import {EAttribute} from "../ecore/EAttribute";
+import {EAnnotation} from "../ecore/EAnnotation";
+import {EDataType} from "../ecore/EDataType";
+import {InternalEObject} from "../ecore/InternalEObject";
+import {ENotificationImpl} from "../ecore/ENotificationImpl";
+import {BasicEObjectImpl} from "../ecore/BasicEObjectImpl";
+import {OrderedSet} from "../ecore/OrderedSet";
+import {NotificationChain} from "../ecore/NotificationChain";
+import {EcorePackageLiterals} from "../ecore/EcorePackageLiterals";
+import {EcorePackageImpl} from "../ecore/EcorePackageImpl";
+import {EStructuralFeatureImpl} from "../ecore/EStructuralFeatureImpl";
+import {EClass} from "../ecore/EClass";
+import {NotificationImpl} from "../ecore/NotificationImpl";
 ///<summary>This class was generated.</summary>
 export class EAttributeBase
 extends EStructuralFeatureImpl
@@ -54,8 +53,8 @@ implements EAttribute
 	};
 
 	protected eStaticClass():EClass{
-		return EcorePackageImpl.eINSTANCE.getEAnnotation_();
-		//return null;
+		//return EcorePackageImpl.eINSTANCE.getEAnnotation_();
+		return null;
 	}
 
 
@@ -108,4 +107,5 @@ implements EAttribute
 	}
 	//public eGetFromEAttribute = this.eGet;
 }
+
 

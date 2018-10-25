@@ -5,7 +5,7 @@
  * contributor: Simon Schwichtenberg
  */
 
-import {EAttributeBase} from "./EAttributeBase";
+import {EAttributeBase} from "../ecore/EAttributeBase";
 
 
 ///<summary>This class was generated.</summary>
@@ -15,6 +15,10 @@ import {EAttributeBase} from "./EAttributeBase";
 	
 	{
 		//implement your generated class here
+
+    public getFeatureID(): number {
+      return this.featureID;
+    };
 	}
 	
 

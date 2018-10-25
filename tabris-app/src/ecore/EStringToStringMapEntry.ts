@@ -5,8 +5,8 @@
  * contributor: Simon Schwichtenberg
  */
 ///<summary>This class was generated.</summary>
-import {InternalEObject} from "./InternalEObject";
-import {OrderedSet} from "./OrderedSet";
+import {InternalEObject} from "../ecore/InternalEObject";
+import {OrderedSet} from "../ecore/OrderedSet";
 export interface EStringToStringMapEntry
 extends InternalEObject
 

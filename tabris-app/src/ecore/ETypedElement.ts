@@ -4,12 +4,12 @@
  *
  * contributor: Simon Schwichtenberg
  */
-import {OrderedSet} from "./OrderedSet";
-import {ENamedElement} from "./ENamedElement";
-import {EGenericType} from "./EGenericType";
-import {EClassifier} from "./EClassifier";
-///<summary>This class was generated.</summary>
 
+///<summary>This class was generated.</summary>
+import {OrderedSet} from "../ecore/OrderedSet";
+import {ENamedElement} from "../ecore/ENamedElement";
+import {EGenericType} from "../ecore/EGenericType";
+import {EClassifier} from "../ecore/EClassifier";
 export interface ETypedElement
 extends ENamedElement
 

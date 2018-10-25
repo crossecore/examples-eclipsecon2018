@@ -6,13 +6,11 @@
  */
 
 ///<summary>This class was generated.</summary>
-
-import {EFactory} from "./EFactory";
-import {OrderedSet} from "./OrderedSet";
-import {EPackage} from "./EPackage";
-import {ENamedElement} from "./ENamedElement";
-import {EClassifier} from "./EClassifier";
-
+import {EFactory} from "../ecore/EFactory";
+import {OrderedSet} from "../ecore/OrderedSet";
+import {EPackage} from "../ecore/EPackage";
+import {ENamedElement} from "../ecore/ENamedElement";
+import {EClassifier} from "../ecore/EClassifier";
 export interface EPackage
 extends ENamedElement
 

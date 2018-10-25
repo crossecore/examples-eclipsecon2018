@@ -6,10 +6,10 @@
  */
 
 ///<summary>This class was generated.</summary>
-import {OrderedSet} from "./OrderedSet";
-import {EPackage} from "./EPackage";
-import {ENamedElement} from "./ENamedElement";
-import {ETypeParameter} from "./ETypeParameter";
+import {OrderedSet} from "../ecore/OrderedSet";
+import {EPackage} from "../ecore/EPackage";
+import {ENamedElement} from "../ecore/ENamedElement";
+import {ETypeParameter} from "../ecore/ETypeParameter";
 export interface EClassifier
 extends ENamedElement
 

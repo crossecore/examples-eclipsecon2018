@@ -12,12 +12,14 @@ export class ConferencePackageLiterals{
 	public static ROOM_NAME:number = 0;
 	
 	public static PERSON:number = 1;
-	public static PERSON_FEATURE_COUNT:number = 3;
-	public static PERSON_OPERATION_COUNT:number = 0;
+	public static PERSON_FEATURE_COUNT:number = 5;
+	public static PERSON_OPERATION_COUNT:number = 1;
 	
-	public static PERSON_AFFILIATION:number = 0;
+	public static PERSON_WORKSFOR:number = 0;
 	public static PERSON_FIRSTNAME:number = 1;
 	public static PERSON_LASTNAME:number = 2;
+	public static PERSON_GIVES:number = 3;
+	public static PERSON_ATTENDS:number = 4;
 	
 	public static ORGANIZATION:number = 2;
 	public static ORGANIZATION_FEATURE_COUNT:number = ConferencePackageLiterals.NAMEDELEMENT_FEATURE_COUNT + 0;
@@ -26,10 +28,12 @@ export class ConferencePackageLiterals{
 	public static ORGANIZATION_NAME:number = 0;
 	
 	public static TRACK:number = 3;
-	public static TRACK_FEATURE_COUNT:number = ConferencePackageLiterals.NAMEDELEMENT_FEATURE_COUNT + 0;
+	public static TRACK_FEATURE_COUNT:number = ConferencePackageLiterals.NAMEDELEMENT_FEATURE_COUNT + 2;
 	public static TRACK_OPERATION_COUNT:number = ConferencePackageLiterals.NAMEDELEMENT_OPERATION_COUNT + 0;
 	
 	public static TRACK_NAME:number = 0;
+	public static TRACK_TALKS:number = 1;
+	public static TRACK_CONFERENCE:number = 2;
 	
 	public static TALK:number = 4;
 	public static TALK_FEATURE_COUNT:number = 7;

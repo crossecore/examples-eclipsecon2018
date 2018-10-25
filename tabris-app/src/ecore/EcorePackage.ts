@@ -4,13 +4,11 @@
  *
  * contributor: Simon Schwichtenberg
  */
-
-import {EAttribute} from "./EAttribute";
-import {EPackage} from "./EPackage";
-import {EDataType} from "./EDataType";
-import {EReference} from "./EReference";
-import {EClass} from "./EClass";
-
+import {EAttribute} from "../ecore/EAttribute";
+import {EPackage} from "../ecore/EPackage";
+import {EDataType} from "../ecore/EDataType";
+import {EReference} from "../ecore/EReference";
+import {EClass} from "../ecore/EClass";
 export interface EcorePackage extends EPackage {
 	getEObject():EClass;
 	

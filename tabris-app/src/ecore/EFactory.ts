@@ -6,12 +6,12 @@
  */
 
 ///<summary>This class was generated.</summary>
-import {EModelElement} from "./EModelElement";
-import {OrderedSet} from "./OrderedSet";
-import {EObject} from "./EObject";
-import {EPackage} from "./EPackage";
-import {EDataType} from "./EDataType";
-import {EClass} from "./EClass";
+import {EModelElement} from "../ecore/EModelElement";
+import {OrderedSet} from "../ecore/OrderedSet";
+import {EObject} from "../ecore/EObject";
+import {EPackage} from "../ecore/EPackage";
+import {EDataType} from "../ecore/EDataType";
+import {EClass} from "../ecore/EClass";
 export interface EFactory
 extends EModelElement
 

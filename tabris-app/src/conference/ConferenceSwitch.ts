@@ -1,3 +1,16 @@
+import {Conference} from "../conference/Conference";
+import {Room} from "../conference/Room";
+import {ConferencePackage} from "../conference/ConferencePackage";
+import {Switch} from "../ecore/Switch";
+import {ConferencePackageImpl} from "../conference/ConferencePackageImpl";
+import {EPackage} from "../ecore/EPackage";
+import {Person} from "../conference/Person";
+import {NamedElement} from "../conference/NamedElement";
+import {EObject} from "../ecore/EObject";
+import {Track} from "../conference/Track";
+import {Talk} from "../conference/Talk";
+import {Venue} from "../conference/Venue";
+import {Organization} from "../conference/Organization";
 export class ConferenceSwitch<T> extends Switch<T> {
 	protected static modelPackage:ConferencePackage;
 	
@@ -98,16 +111,4 @@ export class ConferenceSwitch<T> extends Switch<T> {
 	}
 	
 }
-import {Conference} from "conference/Conference";
-import {Room} from "conference/Room";
-import {ConferencePackage} from "conference/ConferencePackage";
-import {Switch} from "ecore/Switch";
-import {ConferencePackageImpl} from "conference/ConferencePackageImpl";
-import {EPackage} from "ecore/EPackage";
-import {Person} from "conference/Person";
-import {NamedElement} from "conference/NamedElement";
-import {EObject} from "ecore/EObject";
-import {Track} from "conference/Track";
-import {Talk} from "conference/Talk";
-import {Venue} from "conference/Venue";
-import {Organization} from "conference/Organization";
+

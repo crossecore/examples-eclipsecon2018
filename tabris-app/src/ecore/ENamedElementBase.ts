@@ -4,18 +4,18 @@
  *
  * contributor: Simon Schwichtenberg
  */
+import {EAnnotation} from "../ecore/EAnnotation";
+import {InternalEObject} from "../ecore/InternalEObject";
+import {ENotificationImpl} from "../ecore/ENotificationImpl";
+import {BasicEObjectImpl} from "../ecore/BasicEObjectImpl";
+import {OrderedSet} from "../ecore/OrderedSet";
+import {EModelElementImpl} from "../ecore/EModelElementImpl";
+import {NotificationChain} from "../ecore/NotificationChain";
+import {ENamedElement} from "../ecore/ENamedElement";
+import {EcorePackageLiterals} from "../ecore/EcorePackageLiterals";
+import {EClass} from "../ecore/EClass";
+import {NotificationImpl} from "../ecore/NotificationImpl";
 ///<summary>This class was generated.</summary>
-import {EAnnotation} from "./EAnnotation";
-import {InternalEObject} from "./InternalEObject";
-import {ENotificationImpl} from "./ENotificationImpl";
-import {BasicEObjectImpl} from "./BasicEObjectImpl";
-import {OrderedSet} from "./OrderedSet";
-import {EModelElementImpl} from "./EModelElementImpl";
-import {NotificationChain} from "./NotificationChain";
-import {ENamedElement} from "./ENamedElement";
-import {EcorePackageLiterals} from "./EcorePackageLiterals";
-import {EClass} from "./EClass";
-import {NotificationImpl} from "./NotificationImpl";
 export class ENamedElementBase
 extends EModelElementImpl
 implements ENamedElement

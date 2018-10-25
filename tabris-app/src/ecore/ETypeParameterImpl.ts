@@ -5,7 +5,7 @@
  * contributor: Simon Schwichtenberg
  */
 
-import {ETypeParameterBase} from "./ETypeParameterBase";
+import {ETypeParameterBase} from "../ecore/ETypeParameterBase";
 
 ///<summary>This class was generated.</summary>
 

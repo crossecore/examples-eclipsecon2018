@@ -6,9 +6,9 @@
  */
 
 ///<summary>This class was generated.</summary>
-import {OrderedSet} from "./OrderedSet";
-import {EDataType} from "./EDataType";
-import {EEnumLiteral} from "./EEnumLiteral";
+import {OrderedSet} from "../ecore/OrderedSet";
+import {EDataType} from "../ecore/EDataType";
+import {EEnumLiteral} from "../ecore/EEnumLiteral";
 export interface EEnum
 extends EDataType
 

@@ -6,11 +6,11 @@
  */
 
 ///<summary>This class was generated.</summary>
-import {EModelElement} from "./EModelElement";
-import {OrderedSet} from "./OrderedSet";
-import {EObject} from "./EObject";
-import {EStringToStringMapEntry} from "./EStringToStringMapEntry";
 
+import {EModelElement} from "../ecore/EModelElement";
+import {OrderedSet} from "../ecore/OrderedSet";
+import {EObject} from "../ecore/EObject";
+import {EStringToStringMapEntry} from "../ecore/EStringToStringMapEntry";
 export interface EAnnotation
 extends EModelElement
 

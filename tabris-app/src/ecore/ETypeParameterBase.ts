@@ -4,18 +4,18 @@
  *
  * contributor: Simon Schwichtenberg
  */
-import {EAnnotation} from "./EAnnotation";
-import {ETypeParameter} from "./ETypeParameter";
-import {EGenericType} from "./EGenericType";
-import {InternalEObject} from "./InternalEObject";
-import {ENamedElementImpl} from "./ENamedElementImpl";
-import {ENotificationImpl} from "./ENotificationImpl";
-import {BasicEObjectImpl} from "./BasicEObjectImpl";
-import {OrderedSet} from "./OrderedSet";
-import {NotificationChain} from "./NotificationChain";
-import {EcorePackageLiterals} from "./EcorePackageLiterals";
-import {EClass} from "./EClass";
-import {NotificationImpl} from "./NotificationImpl";
+import {EAnnotation} from "../ecore/EAnnotation";
+import {ETypeParameter} from "../ecore/ETypeParameter";
+import {EGenericType} from "../ecore/EGenericType";
+import {InternalEObject} from "../ecore/InternalEObject";
+import {ENamedElementImpl} from "../ecore/ENamedElementImpl";
+import {ENotificationImpl} from "../ecore/ENotificationImpl";
+import {BasicEObjectImpl} from "../ecore/BasicEObjectImpl";
+import {OrderedSet} from "../ecore/OrderedSet";
+import {NotificationChain} from "../ecore/NotificationChain";
+import {EcorePackageLiterals} from "../ecore/EcorePackageLiterals";
+import {EClass} from "../ecore/EClass";
+import {NotificationImpl} from "../ecore/NotificationImpl";
 ///<summary>This class was generated.</summary>
 export class ETypeParameterBase
 extends ENamedElementImpl

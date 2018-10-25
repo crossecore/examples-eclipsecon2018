@@ -5,7 +5,7 @@
  * contributor: Simon Schwichtenberg
  */
 
-import {ETypedElementBase} from "./ETypedElementBase";
+import {ETypedElementBase} from "../ecore/ETypedElementBase";
 
 ///<summary>This class was generated.</summary>
 
@@ -13,7 +13,9 @@ import {ETypedElementBase} from "./ETypedElementBase";
 	extends ETypedElementBase
 	
 	{
-		//implement your generated class here
+    get many():boolean{
+      return this.upperBound == -1 || this.upperBound >1;
+    }
 	}
 	
 

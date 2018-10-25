@@ -4,27 +4,27 @@
  *
  * contributor: Simon Schwichtenberg
  */
-
+import {TreeIterator} from "../ecore/TreeIterator";
+import {EReference} from "../ecore/EReference";
+import {EStructuralFeature} from "../ecore/EStructuralFeature";
+import {InternalEObject} from "../ecore/InternalEObject";
+import {EOperation} from "../ecore/EOperation";
+import {ENotificationImpl} from "../ecore/ENotificationImpl";
+import {BasicEObjectImpl} from "../ecore/BasicEObjectImpl";
+import {EObject} from "../ecore/EObject";
+import {List} from "../ecore/List";
+import {NotificationChain} from "../ecore/NotificationChain";
+import {EcorePackageLiterals} from "../ecore/EcorePackageLiterals";
+import {Resource} from "../ecore/Resource";
+import {EClass} from "../ecore/EClass";
+import {NotificationImpl} from "../ecore/NotificationImpl";
 ///<summary>This class was generated.</summary>
-import {TreeIterator} from "./TreeIterator";
-import {EReference} from "./EReference";
-import {EStructuralFeature} from "./EStructuralFeature";
-import {InternalEObject} from "./InternalEObject";
-import {EOperation} from "./EOperation";
-import {ENotificationImpl} from "./ENotificationImpl";
-import {BasicEObjectImpl} from "./BasicEObjectImpl";
-import {EObject} from "./EObject";
-import {List} from "./List";
-import {NotificationChain} from "./NotificationChain";
-import {EcorePackageLiterals} from "./EcorePackageLiterals";
-import {Resource} from "./Resource";
-import {EClass} from "./EClass";
-import {NotificationImpl} from "./NotificationImpl";
 export class EObjectBase
 extends BasicEObjectImpl
 implements EObject
 
 {
+
 
 	
 	public eIsSet(feature:EStructuralFeature): boolean {
@@ -95,10 +95,6 @@ implements EObject
 			
 			return this.eGet_EStructuralFeature_boolean(args[0], args[1]);
 		}
-        if(args.length === 3){
-
-            return this.eGet_X(args[0], args[1], args[2]);
-        }
 	};
 	
 	public eGet_EStructuralFeature(feature:EStructuralFeature): any {
@@ -115,17 +111,13 @@ implements EObject
 		return null;
 	};
 
-	protected eStaticClass():EClass{
-		//return EcorePackageLiterals.EOBJECT;
-		return null;
-	}
 
 
 
-	public eGet_X(featureID:number, resolve:boolean, coreType:boolean):any{
-		//return this.eGetFromBasicEObjectImpl(featureID, resolve, coreType);
-		return super.eGet(featureID, resolve, coreType);
-	}
+
+
+
+
 	//public eGetFromEObject = this.eGet;
 }
 

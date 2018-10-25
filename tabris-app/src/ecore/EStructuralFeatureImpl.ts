@@ -5,7 +5,7 @@
  * contributor: Simon Schwichtenberg
  */
 
-import {EStructuralFeatureBase} from "./EStructuralFeatureBase";
+import {EStructuralFeatureBase} from "../ecore/EStructuralFeatureBase";
 
 ///<summary>This class was generated.</summary>
 

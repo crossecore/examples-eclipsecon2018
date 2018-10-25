@@ -6,7 +6,7 @@
  */
 
 
-import {Notification} from "./Notification";
+import {Notification} from "../ecore/Notification";
 export interface NotificationChain
     {
         add(notification:Notification):boolean;

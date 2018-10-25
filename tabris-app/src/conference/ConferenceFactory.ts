@@ -1,3 +1,11 @@
+import {EFactory} from "../ecore/EFactory";
+import {Conference} from "../conference/Conference";
+import {Room} from "../conference/Room";
+import {Track} from "../conference/Track";
+import {Talk} from "../conference/Talk";
+import {Venue} from "../conference/Venue";
+import {Person} from "../conference/Person";
+import {Organization} from "../conference/Organization";
 export interface ConferenceFactory extends EFactory{
 	createRoom():Room;
 	createPerson():Person;
@@ -7,11 +15,3 @@ export interface ConferenceFactory extends EFactory{
 	createConference():Conference;
 	createVenue():Venue;
 }
-import {EFactory} from "ecore/EFactory";
-import {Conference} from "conference/Conference";
-import {Room} from "conference/Room";
-import {Track} from "conference/Track";
-import {Talk} from "conference/Talk";
-import {Venue} from "conference/Venue";
-import {Person} from "conference/Person";
-import {Organization} from "conference/Organization";

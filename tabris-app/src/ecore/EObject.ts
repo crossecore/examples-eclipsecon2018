@@ -5,15 +5,15 @@
  * contributor: Simon Schwichtenberg
  */
 ///<summary>This class was generated.</summary>
-import {TreeIterator} from "./TreeIterator";
-import {EOperation} from "./EOperation";
-import {Notifier} from "./Notifier";
-import {EObject} from "./EObject";
-import {List} from "./List";
-import {Resource} from "./Resource";
-import {EReference} from "./EReference";
-import {EStructuralFeature} from "./EStructuralFeature";
-import {EClass} from "./EClass";
+import {TreeIterator} from "../ecore/TreeIterator";
+import {EOperation} from "../ecore/EOperation";
+import {Notifier} from "../ecore/Notifier";
+import {EObject} from "../ecore/EObject";
+import {List} from "../ecore/List";
+import {Resource} from "../ecore/Resource";
+import {EReference} from "../ecore/EReference";
+import {EStructuralFeature} from "../ecore/EStructuralFeature";
+import {EClass} from "../ecore/EClass";
 export interface EObject
 extends Notifier
 
