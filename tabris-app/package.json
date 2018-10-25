@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "@types/pouchdb": "^6.3.2",
-    "pouchdb": "^6.4.3",
+    "@types/systemjs": "^0.20.6",
+    "pouchdb": "^7.0.0",
     "pouchdb-adapter-cordova-sqlite": "^2.0.5",
     "tabris": "^2.6.1"
   },
