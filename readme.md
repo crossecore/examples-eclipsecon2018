@@ -1,6 +1,6 @@
 # CrossEcore Showcase
 
-This showcase presents how CrossEcore TypeScript can be used in a browser based [Angular](https://angular.io/) app with the [Angular Material](https://v5.material.angular.io/) user interface or as a hybrid app with a [Tabris](https://tabris.com/) user interface.
+This showcase presents how CrossEcore TypeScript can be used in a browser based [Angular](https://angular.io/) app with the [Angular Material](https://v5.material.angular.io/) user interface or as a hybrid Android app with a [Tabris](https://tabris.com/) user interface. This showcase was presented at the EclipeCon Europe 2018 in terms of the Modeling Symposium which is available on [YouTube](https://www.youtube.com/watch?v=T7-ExsSzSWw).
 It also shows how Ecore models can be stored in the document-based NoSQL database [PouchDB](https://pouchdb.com/). PouchDB synchronizes with a remote [Apache CouchDB](http://couchdb.apache.org/) and stores the data locally on the end-user devices with the aid of the WebSQL adapter in the web browser and with the SQLite adapter in the hybrid app.
 
 
