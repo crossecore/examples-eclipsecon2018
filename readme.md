@@ -236,11 +236,24 @@ this.conference.talks.select(t => t.track == this);
 ```
 
 
-# Building
+# Installation, Building and Running
+## CouchDB
+As explained in the beginning, the app stores the model in a PouchDB and synchronizes it with a remote CouchDB.
+When you start the app the first time, it creates the PouchDB and imports the contents from a CSV file.
+The app even runs out of the box without the CouchDB.
+
+If you want to use the CouchDB synchronization here is what you have to do:
+By default, the app expects the remote CouchDB to be available at http://localhost:5984 and that the database *eclipsecon* exists.
+You can install CouchDB on your local computer by following the [CouchDB installation instructions](http://docs.couchdb.org/en/stable/install/index.html).
+Once you have installed it, you can open Fauxton, the user interface of CouchDB that is available at http://localhost:5984/_utils/ to create the database *eclipsecon*.
+
+When you want to connect to the CouchDB from the Tabris app be sure that you configure a network address that is accessible from the mobile device and that you have proper firewall settings (port 5984). 
+
 ## Angular App
+
+
 Install [Node.js](https://nodejs.org).
 Open a command line interface and install Angular CLI via the Node.js Package Manager (npm).
-
 
 ```bash
 npm install angular-cli -g

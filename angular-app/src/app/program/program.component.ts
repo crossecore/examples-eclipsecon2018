@@ -26,8 +26,9 @@ import {EStructuralFeature} from 'ecore/EStructuralFeature';
 import {BasicEObjectImpl} from 'ecore/BasicEObjectImpl';
 import {AbstractCollection} from 'ecore/AbstractCollection';
 import {ConferenceImpl} from 'conference/ConferenceImpl';
-import {Organization} from '../../conference/Organization';
-import {ENotificationImpl} from '../../ecore/ENotificationImpl';
+import {Organization} from 'conference/Organization';
+import {ENotificationImpl} from 'ecore/ENotificationImpl';
+import {MatSnackBar} from '@angular/material';
 
 
 
@@ -66,14 +67,14 @@ class MyAdapter implements Adapter{
       const local_db = new PouchDB('eclipsecon');
 
       local_db.get((notifier as BasicEObjectImpl)._uuid)
-        .then(function(currentDoc){
+        .then((currentDoc)=>{
           newDoc["_rev"] = currentDoc._rev;
 
           return local_db.put(newDoc);
         })
-        .then(function (response) {
+        .then( (response)=> {
         console.log(response);
-      }).catch(function (err) {
+      }).catch( (err)=> {
         console.log(err);
       });
     }
@@ -99,6 +100,13 @@ export class ProgramComponent implements OnInit {
 
   resolveJobs:ResolveJobRegistry;
   eobjectRegistry:EObjectRegistry;
+
+  localDB;
+  remoteDB;
+
+  remoteHasContents:boolean;
+  localHasContents:boolean;
+  hasRemote:boolean = false;
 
   initialized:boolean = false;
 
@@ -129,7 +137,7 @@ export class ProgramComponent implements OnInit {
     }
   }
 
-  constructor() {
+  constructor(public snackBar: MatSnackBar) {
 
     this.conference = ConferenceFactoryImpl.eINSTANCE.createConference();
     this.jsonResource = new JsonResource(ConferencePackageImpl.eINSTANCE, ConferenceFactoryImpl.eINSTANCE);
@@ -143,84 +151,193 @@ export class ProgramComponent implements OnInit {
     this.resolveJobs = {};
     this.eobjectRegistry = {};
 
-    var closure = this;
+    this.localDB = new PouchDB("eclipsecon");
+    this.remoteDB = new PouchDB("http://localhost:5984/eclipsecon");
+    this.remoteHasContents = false;
+
+    this.load();
+
+  }
+
+  protected load(){
+
+    this.localDB.info().then((result)=> {
+      if(result.doc_count === 0){
+        this.localHasContents = false;
+      }
+      else{
+        this.localHasContents = true;
+      }
+
+      return this.remoteDB.info();
+
+    }).then((result)=> {
+        this.hasRemote = true;
+        if(result.doc_count === 0){
+          this.remoteHasContents = false;
+        }
+        else{
+          this.remoteHasContents = true;
+        }
+
+        if(!this.localHasContents && !this.remoteHasContents){
+
+          this.loadCSV();
+
+        }
+        else{
+          this.synchronize();
+        }
+
+
+      })
+      .catch((err)=> {
+
+
+        this.snackBar.open(`Remote database ${this.remoteDB.name} not available. Using local.`, "Dismiss", {
+          duration: 4000,
+        });
+        if(!this.localHasContents){
+          this.loadCSV();
+        }
+        else{
+          this.loadDatabase();
+        }
+
+    });
+
+
+  }
+
+  protected loadDatabase(){
 
 
 
-    this.synchronize();
+    const user_db = new PouchDB('user');
 
-/*
+    this.initialized = true;
+    this.localDB.allDocs({
+      include_docs: true,
+      attachments: true
+    }).then( (result)=> {
+
+      for (let row of result.rows) {
+
+        let eobject = this.jsonResource.fromJson(row.doc);
+
+        if (eobject instanceof ConferenceImpl) {
+          this.conference = eobject as Conference;
+          this.filteredTalks = this.conference.talks;
+        }
+
+      }
+      return user_db.allDocs({
+        include_docs: true,
+        attachments: true
+      });
+
+
+    })
+      .then( (result)=> {
+
+        if (result !== undefined) {
+          if (result.total_rows === 0) {
+
+            this.user = ConferenceFactoryImpl.eINSTANCE.createPerson();
+
+            user_db.post(this.jsonResource.asJson(this.user));
+            this.localDB.post(this.jsonResource.asJson(this.user));
+          }
+          else {
+
+            return this.localDB.get(result.rows[0].id);
+
+          }
+        }
+
+      })
+      .then( (doc)=> {
+
+        if (doc !== undefined) {
+          this.user = this.jsonResource.getById(doc._id) as Person;
+          this.user.eAdapters().push(new MyAdapter());
+        }
+
+      })
+      .catch( (err)=> {
+        console.log(err);
+      });
+  }
+
+  protected loadCSV(){
+
 
     Papa.parse('assets/eclipsecon.csv', {
       download: true,
       header	: true,
-      complete: function(results) {
+      complete: (results)=> {
         console.log(results);
 
         for(var row of results.data){
           //"Title","Track","Speaker(s)","Organization","Room","Time"
-          var rawTitle = row["Title"];//[0];
-          var rawTrack = row["Track"];//[1];
-          var rawSpeakers = row["Speaker(s)"];
-          var rawOrganization = row["Organization"];
-          var rawRoom = row["Room"];
-          var rawTime = row["Time"];
+          let rawTitle = row["Title"];//[0];
+          let rawTrack = row["Track"];//[1];
+          let rawSpeakers = row["Speaker(s)"];
+          let rawOrganization = row["Organization"];
+          let rawRoom = row["Room"];
+          let rawTime = row["Time"];
 
           if(rawTitle){
 
-
-
-            var talk = ConferenceFactoryImpl.eINSTANCE.createTalk();
+            let talk = ConferenceFactoryImpl.eINSTANCE.createTalk();
             //"Building Cloud and Desktop IDEs with Theia","Web & Cloud Development","Anton Kosyakov (TypeFox)","TypeFox","Bürgersaal 2","Tuesday, October 23, 2018 - 09:00 to 12:00"
 
             talk.title = rawTitle;
 
 
-            var organization:Organization = null;
+            let organization:Organization = null;
             if(rawOrganization!==undefined){
 
-              if(closure.conference.organizations.select(a => a.name === rawOrganization).isEmpty()){
+              if(this.conference.organizations.select(a => a.name === rawOrganization).isEmpty()){
 
                 organization = ConferenceFactoryImpl.eINSTANCE.createOrganization();
                 organization.name = rawOrganization;
 
-                closure.conference.organizations.add(organization);
+                this.conference.organizations.add(organization);
 
               }
               else{
-                organization = closure.conference.organizations.select(a => a.name === rawOrganization).any(t=>true);
+                organization = this.conference.organizations.select(a => a.name === rawOrganization).any(t=>true);
               }
             }
 
             if(rawSpeakers!==undefined){
-              var index = rawSpeakers.indexOf('(');
+              let index = rawSpeakers.indexOf('(');
 
               if(index > -1){
-                var name = rawSpeakers.substring(0, index - 1);
-                var parts = name.split(' ');
-                var firstName = parts[0];
-                var lastName = parts[1];
+                let name = rawSpeakers.substring(0, index - 1);
+                let parts = name.split(' ');
+                let firstName = parts[0];
+                let lastName = parts[1];
 
 
-                var speaker:Person = null;
-                if(closure.conference.attendees.select(a => a.firstName === firstName && a.lastName ===lastName).isEmpty()){
+                let speaker:Person = null;
+                if(this.conference.attendees.select(a => a.firstName === firstName && a.lastName ===lastName).isEmpty()){
 
                   speaker = ConferenceFactoryImpl.eINSTANCE.createPerson();
                   speaker.firstName = firstName;
                   speaker.lastName = lastName;
-                  closure.conference.attendees.add(speaker);
+                  this.conference.attendees.add(speaker);
 
                 }
                 else{
-                  speaker = closure.conference.attendees.select(a => a.firstName === firstName && a.lastName ===lastName).any(t=>true);
+                  speaker = this.conference.attendees.select(a => a.firstName === firstName && a.lastName ===lastName).any(t=>true);
                 }
-
+                if(organization!==null){
+                  speaker.worksFor = organization;
+                }
                 talk.speakers.add(speaker);
-                closure.conference.talks.add(talk);
-              }
-
-              if(organization!==null){
-                speaker.worksFor = organization;
+                this.conference.talks.add(talk);
               }
 
             }
@@ -232,13 +349,13 @@ export class ProgramComponent implements OnInit {
 
 
 
-              if(closure.conference.tracks.select(t => t.name ===rawTrack).isEmpty()){
+              if(this.conference.tracks.select(t => t.name ===rawTrack).isEmpty()){
                 track = ConferenceFactoryImpl.eINSTANCE.createTrack();
                 track.name = rawTrack;
-                closure.conference.tracks.add(track);
+                this.conference.tracks.add(track);
               }
               else{
-                track = closure.conference.tracks.select(t=>t.name === rawTrack).any(t=>true);
+                track = this.conference.tracks.select(t=>t.name === rawTrack).any(t=>true);
               }
 
               talk.track = track;
@@ -269,99 +386,41 @@ export class ProgramComponent implements OnInit {
 
         }
 
-        closure.importIntoDataBase();
+        this.importIntoDataBase();
+
       }
 
-
-
-
     });
-
-*/
-
   }
 
 
   synchronize(){
 
-    let closure = this;
     const local_db = new PouchDB('eclipsecon');
-
-    const user_db = new PouchDB('user');
-
 
     PouchDB.sync('eclipsecon', 'http://localhost:5984/eclipsecon', {
       live: true,
       retry: true
-    }).on('change', function (info) {
+    }).on('change',  (info)=> {
 
 
-    }).on('paused', function (err) {
+    }).on('paused',  (err)=> {
 
-      //TODO do full loading just once:
-      if(!closure.initialized) {
-        closure.initialized = true;
-        local_db.allDocs({
-          include_docs: true,
-          attachments: true
-        }).then(function (result) {
-
-          for (let row of result.rows) {
-
-            let eobject = closure.jsonResource.fromJson(row.doc);
-
-            if (eobject instanceof ConferenceImpl) {
-              closure.conference = eobject as Conference;
-              closure.filteredTalks = closure.conference.talks;
-            }
-
-          }
-          return user_db.allDocs({
-            include_docs: true,
-            attachments: true
-          });
-
-
-        })
-          .then(function (result) {
-
-            if (result !== undefined) {
-              if (result.total_rows === 0) {
-
-                closure.user = ConferenceFactoryImpl.eINSTANCE.createPerson();
-
-                user_db.post(closure.jsonResource.asJson(closure.user));
-                local_db.post(closure.jsonResource.asJson(closure.user));
-              }
-              else {
-
-                return local_db.get(result.rows[0].id);
-
-              }
-            }
-
-          })
-          .then(function (doc) {
-
-            if (doc !== undefined) {
-              closure.user = closure.jsonResource.getById(doc._id) as Person;
-              closure.user.eAdapters().push(new MyAdapter());
-            }
-
-          })
-          .catch(function (err) {
-            console.log(err);
-          });
+      this.snackBar.open("Synchronization completed", "Nice", {
+        duration: 2000,
+      });
+      if(!this.initialized) {
+        this.loadDatabase();
       }
 
 
-    }).on('active', function () {
+    }).on('active',  ()=> {
       // replicate resumed (e.g. new changes replicating, user went back online)
-    }).on('denied', function (err) {
+    }).on('denied',  (err)=> {
       // a document failed to replicate (e.g. due to permissions)
-    }).on('complete', function (info) {
+    }).on('complete',  (info)=> {
       // handle complete
-    }).on('error', function (err) {
+    }).on('error',  (err)=> {
       // handle error
     });
 
@@ -370,7 +429,6 @@ export class ProgramComponent implements OnInit {
 
 
   importIntoDataBase(){
-    const db = new PouchDB('http://localhost:5984/eclipsecon/');
 
     let docs = new Array<any>();
     let treeIterator = new ContentTreeIterator(this.conference);
@@ -391,9 +449,14 @@ export class ProgramComponent implements OnInit {
 
     }
 
-    db.bulkDocs(docs).then(function (result) {
-      // handle result
-    }).catch(function (err) {
+    this.localDB.bulkDocs(docs).then( (result)=> {
+      if(this.hasRemote){
+        this.synchronize()
+      }
+      else{
+        this.loadDatabase();
+      }
+    }).catch( (err)=> {
       console.log(err);
     });
 
