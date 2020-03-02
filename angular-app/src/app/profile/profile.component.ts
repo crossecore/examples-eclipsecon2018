@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Person} from 'conference/Person';
 import {ConferenceFactoryImpl} from 'conference/ConferenceFactoryImpl';
-import {OrderedSet} from '../../ecore/OrderedSet';
-import {EAttribute} from '../../ecore/EAttribute';
+import {OrderedSet} from 'ecore/OrderedSet';
+import {EAttribute} from 'ecore/EAttribute';
 
 @Component({
   selector: 'app-profile',

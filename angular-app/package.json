@@ -24,6 +24,7 @@
     "@angular/router": "^6.1.0",
     "@types/pouchdb": "^6.3.2",
     "core-js": "^2.5.4",
+    "crossecore": "^0.1.0",
     "papaparse": "^4.6.1",
     "pouchdb": "^7.0.0",
     "rxjs": "~6.2.0",

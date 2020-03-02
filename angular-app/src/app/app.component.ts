@@ -7,8 +7,10 @@ import {Talk} from 'conference/Talk';
 import {Track} from 'conference/Track';
 import {Person} from 'conference/Person';
 import {Conference} from 'conference/Conference';
-import {EClass} from 'ecore/EClass';
+//import {EClass} from 'ecore/EClass';
 
+import {EClass} from "crossecore"
+import {EcorePackageImpl} from "crossecore"
 
 
 @Component({
